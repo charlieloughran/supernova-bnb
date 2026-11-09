@@ -8,8 +8,8 @@ CREATE TABLE spaces (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
-    availability_start_date TEXT,
-    availability_end_date TEXT,
+    availability_start_date DATE,
+    availability_end_date DATE,
     price_per_night FLOAT,
     image_url TEXT,
     owner_id INT
