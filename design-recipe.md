@@ -80,10 +80,10 @@ As a Booking Maker, I would like to see if my booking has been accepted or decli
 
 3. `booking`
     - `id` (Primary Key, Serial/Integer)
+    - `space_id` int
     - `booked_by` int (user_id) Foreign key
     - `date` date
-    - `is_confirmed` bool
-    - `space_id` int
+    - `status` string (requested, accepted, declined)
 
 
 ## 6. Classes
