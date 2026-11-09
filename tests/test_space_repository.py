@@ -5,15 +5,21 @@ from lib.space import Space
 When we call SpaceRepository#all
 We get a list of Space objects reflecting the seed data.
 """
-def test_get_all_records(db_connection): # See conftest.py to learn what `db_connection` is.
-    db_connection.seed("seeds/spaces.sql") # Seed our database with some test data
-    repository = SpaceRepository(db_connection) # Create a new SpaceRepository
+def test_get_all_records(db_connection): 
+    db_connection.seed("seeds/spaces.sql") 
+    repository = SpaceRepository(db_connection) 
 
-    spaces = repository.all() # Get all spaces
+    spaces = repository.all()
 
     # Assert on the results
     assert spaces == [
-
+        Space('Mercury', 'For the queen worshipers', '2026-04-25', '2027-04-25', 220.13, 'static/mercury-space.png', 1, 1),
+        Space('Venus', 'For the fly trap lovers', '2026-04-25', '2027-04-25', 220.13, 'static/venus-space.png', 2, 2),
+        Space('Earth', 'For the life lovers', '2026-04-25', '2027-04-25', 220.13, 'static/earth-space.png', 3, 3),
+        Space('Mars', 'For the wanna-be earth leavers', '2026-04-25', '2027-04-25', 220.13, 'static/mars-space.png', 4, 4),
+        Space('Jupiter', 'For the grand regent lovers', '2026-04-25', '2027-04-25', 220.13, 'static/jupiter-space.png', 5, 5),
+        Space('Saturn', 'For the ring lovers', '2026-04-25', '2027-04-25', 220.13, 'static/saturn-space.png', 2, 6),
+        Space('Uranus', 'For the lovers', '2026-04-25', '2027-04-25', 220.13, 'static/uranus-space.png', 3, 7)
     ]
 
 """
@@ -25,7 +31,7 @@ def test_get_single_record(db_connection):
     repository = SpaceRepository(db_connection)
 
     space = repository.find(3)
-    assert space == Space()
+    assert space == Space('Earth', 'For the life lovers', '2026-04-25', '2027-04-25', 220.13, 'static/earth-space.png', 3, 3)
 
 
 
@@ -38,11 +44,18 @@ def test_create_record(db_connection):
     db_connection.seed("seeds/spaces.sql")
     repository = SpaceRepository(db_connection)
 
-    repository.create(Space())
+    repository.create(Space('Neptune', 'For the water lovers', '2026-04-25', '2027-04-25', 220.13, 'static/neptune-space.png', 3, None))
 
     result = repository.all()
     assert result == [
-
+        Space('Mercury', 'For the queen worshipers', '2026-04-25', '2027-04-25', 220.13, 'static/mercury-space.png', 1, 1),
+        Space('Venus', 'For the fly trap lovers', '2026-04-25', '2027-04-25', 220.13, 'static/venus-space.png', 2, 2),
+        Space('Earth', 'For the life lovers', '2026-04-25', '2027-04-25', 220.13, 'static/earth-space.png', 3, 3),
+        Space('Mars', 'For the wanna-be earth leavers', '2026-04-25', '2027-04-25', 220.13, 'static/mars-space.png', 4, 4),
+        Space('Jupiter', 'For the grand regent lovers', '2026-04-25', '2027-04-25', 220.13, 'static/jupiter-space.png', 5, 5),
+        Space('Saturn', 'For the ring lovers', '2026-04-25', '2027-04-25', 220.13, 'static/saturn-space.png', 2, 6),
+        Space('Uranus', 'For the lovers', '2026-04-25', '2027-04-25', 220.13, 'static/uranus-space.png', 3, 7),
+        Space('Neptune', 'For the water lovers', '2026-04-25', '2027-04-25', 220.13, 'static/neptune-space.png', 3, 8)
 
     ]
 
@@ -57,5 +70,11 @@ def test_delete_record(db_connection):
 
     spaces = repository.all()
     assert spaces == [
+        Space('Mercury', 'For the queen worshipers', '2026-04-25', '2027-04-25', 220.13, 'static/mercury-space.png', 1, 1),
+        Space('Venus', 'For the fly trap lovers', '2026-04-25', '2027-04-25', 220.13, 'static/venus-space.png', 2, 2),
+        Space('Mars', 'For the wanna-be earth leavers', '2026-04-25', '2027-04-25', 220.13, 'static/mars-space.png', 4, 4),
+        Space('Jupiter', 'For the grand regent lovers', '2026-04-25', '2027-04-25', 220.13, 'static/jupiter-space.png', 5, 5),
+        Space('Saturn', 'For the ring lovers', '2026-04-25', '2027-04-25', 220.13, 'static/saturn-space.png', 2, 6),
+        Space('Uranus', 'For the lovers', '2026-04-25', '2027-04-25', 220.13, 'static/uranus-space.png', 3, 7),
 
     ]
