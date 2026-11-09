@@ -1,30 +1,45 @@
 # Design Recipe
 
-## 1. Overview and Problem Statement
+## 1. Overview
 
+We would like a web application that allows users to list spaces they have available, and to hire spaces for the night
 
-
-- **Problem**: 
-
-- **Solution** 
+- Any signed-up user can list a new space.
+- Users can list multiple spaces.
+- Users should be able to name their space, provide a short description of the space, and a price per night.
+- Users should be able to offer a range of dates where their space is available.
+- Any signed-up user can request to hire any space for one night, and this should be approved by the user that owns that space.
+- Nights for which a space has already been booked should not be available for users to book that space.
+- Until a user has confirmed a booking request, that space can still be booked for that night.
 
 ---
 
 ## 2. Roles
 
-**Space Owner:** 
-**User:** 
+**Space Owner:** Lists the spaces and accepts bookings
+**Booking Maker:** Looks for spaces and requests bookings
+
 
 ---
 
 ## 3. User Stories
 
-### Admin
 
+**Space Owner:** 
 
-### User
+As a Space Owner, I would like to create an account so that I can list my spaces.
+As a Space Owner, I would like to add a new space to spaces list.
+As a Space Owner, I would like to be able to add multiple spaces to spaces list.
+As a Space Owner, I would like to share the name, description and price per night for my space.
+As a Space Owner, I would like to offer a range of dates when my space is available.
+As a Space Owner, I would like to approve requests made my Booking Makers.
+As a Space Owner, I would like to still receive requests after a booking request has been made.
 
-
+**Booking Maker:** 
+As a Booking Maker, I would like to request to book any space for one night.
+As a Booking Maker, I would like to see when a space is available.
+As a Booking Maker, I would like to see a list of all spaces
+As a Booking Maker, I would like to see if my booking has been accepted or declined.
 
 
 ---
@@ -54,35 +69,71 @@
     - `role` (Enum: 'admin', 'actor')
 
 2. `spaces`
-    - `id`
-    - `name`
-    - `description`
-    - `user_id (owner)`
-    - `availability_start_date`
-    - `availability_end_date`
-    - `price_per_night`
-    - `image_url`
+    - `id` (Primary Key, Serial/Integer)
+    - `name` (String, Not Null)
+    - `description` (String, Not Null)
+    - `user_id (owner)` int
+    - `availability_start_date` date
+    - `availability_end_date` date
+    - `price_per_night` float
+    - `image_url` url
 
 3. `booking`
-    - `id`
-    - `booked_by`
-    - `date`
-    - `confirmation`
-    - `space_id`
+    - `id` (Primary Key, Serial/Integer)
+    - `booked_by` int (user_id) Foreign key
+    - `date` date
+    - `is_confirmed` bool
+    - `space_id` int
+
+
+## 6. Classes
+
+class User
+
+class UserRepository
+
+class Space
+
+class SpaceRepository
+
+class Booking
+
+class BookingRepository
 
 
 
+## 7. Routes
 
-## 6. Routes
 
-
--- Sign Up & Login
+==== SIGN UP & LOGIN ====
 
 GET '/login' --> shows the login form
 POST '/login/new' --> Sends the login data to the database
 
-GET '/users' --> shows the registration form
-POST '/users/new' --> Sends the user data to the database
+GET '/register' --> shows the registration form
+POST '/register/new' --> Sends the user data to the database
+
+
+
+==== SPACES ====
+
+GET '/spaces' --> shows the registration form
+POST '/spaces/new' --> Space Owner uploades a space to the site
+
+GET 'spaces/<space_id>' --> shows the space and the details
+
+GET 'spaces/<space_id>/bookings' --> shows the booking form
+POST 'spaces/<space_id>/bookings/new' --> New booking requets
+
+
+==== BOOKINGS ===
+
+GET 'bookings/<booking_id> --> he space and the details
+
+
+
+
+
  
 
 
