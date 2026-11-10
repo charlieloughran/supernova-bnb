@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SupernovaBnB - Spaces</title>
+
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        {% include "components/nav.html" %}
+        <h2>Spaces</h2>
+        {% for space in spaces %}
+        <article>
+            <div class="image-wrapper">
+                <img src="{{space.image_url}}">
+            </div>
+                <figcaption>
+                    <p class="space-name">
+                        {{ space.name }}
+                    </p>
+                    <p class="space-description">
+                        {{ space.description }}
+                    </p>
+                    <p class="price-per-night">
+                        £{{ space.price_per_night }}
+                    </p>
+                </figcaption>
+            
+        </article>
+        {% endfor %}
+    </body>
+</html>
