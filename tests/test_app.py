@@ -9,7 +9,7 @@ We can render the index page
 def test_get_index(page, test_web_address):
     # We load a virtual browser and navigate to the /index page
     page.goto(f"http://{test_web_address}/")
-
+    
     # We look at the h1 tag
     h_tag = page.locator("h1")
     
@@ -21,12 +21,13 @@ def test_get_index(page, test_web_address):
 We can read all the spaces from the db and display them on the index page
 """
 
-def test_index_gets_spaces(page, test_web_address,db_connection):
+def test_index_gets_spaces(db_connection, page, test_web_address):
+    db_connection.seed("seeds/spaces.sql") 
+    repository = SpaceRepository(db_connection) 
     page.goto(f"http://{test_web_address}/")
     
     space_card_headers = page.locator('.space_card_header > h3')
     
-    db_connection.seed('seeds/spaces.sql')
     space_repo = SpaceRepository(db_connection)
     spaces = space_repo.all()
     space_names = [space.name for space in spaces]
