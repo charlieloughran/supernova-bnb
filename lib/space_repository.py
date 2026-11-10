@@ -37,7 +37,7 @@ class SpaceRepository:
 
 
 
-    # Delete an space by their id
+    # Find spaces by their owner_id
     def find_by_owner_id(self, owner_id):
         rows = self._connection.execute(
             'SELECT id, name, description, availability_start_date, availability_end_date, price_per_night, image_url, owner_id FROM spaces WHERE owner_id = %s', [owner_id])
