@@ -21,9 +21,12 @@ def get_index():
 def get_my_spaces():
     db_connection = get_flask_database_connection(app)
     space_repo = SpaceRepository(db_connection)
-    all_spaces = space_repo.all()
 
+    #Gets Username/User ID from session
 
+    all_spaces = space_repo.find_by_owner_id(2) #Passes Username/ User ID as parameter
+
+    # Lists all user spaces on my-spaces template
     return render_template('my-spaces.html', spaces=all_spaces)
 
 # These lines start the server if you run this file directly
