@@ -6,7 +6,7 @@ class BookingRepository:
         self._connection = connection
 
     def all(self):
-        rows = self._connection.execute('SELECT * from bookings')
+        rows = self._connection.execute('SELECT * from bookings order by id')
         bookings = []
         for row in rows:
             item = Booking(row["space_id"], row["booked_by"], row["date"], row["status"], row["id"])
@@ -33,3 +33,4 @@ class BookingRepository:
         self._connection.execute(
             'UPDATE bookings SET status = %s WHERE id = %s', [new_status, booking_id]
         )
+        return None

@@ -76,8 +76,8 @@ def test_update_record(db_connection):
 
     result = repository.all()
     assert result == [
+        Booking(3, 2, date(2027, 3, 1), 'accepted', 1),
         Booking(2, 1, date(2027, 1, 1), 'declined', 2),
         Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
-        Booking(1, 2, date(2027, 2, 11), 'requested', 4),
-        Booking(3, 2, date(2027, 3, 1), 'accepted', 1)
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4)
     ]
