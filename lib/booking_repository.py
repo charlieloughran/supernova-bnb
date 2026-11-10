@@ -6,7 +6,7 @@ class BookingRepository:
         self._connection = connection
 
     def all(self):
-        rows = self._connection.execute('SELECT * from bookings')
+        rows = self._connection.execute('SELECT * from bookings order by id')
         bookings = []
         for row in rows:
             item = Booking(row["space_id"], row["booked_by"], row["date"], row["status"], row["id"])
@@ -27,4 +27,10 @@ class BookingRepository:
     def delete(self, booking_id):
         self._connection.execute(
             'DELETE FROM bookings WHERE id = %s', [booking_id])
+        return None
+
+    def update(self, booking_id, new_status):
+        self._connection.execute(
+            'UPDATE bookings SET status = %s WHERE id = %s', [new_status, booking_id]
+        )
         return None
