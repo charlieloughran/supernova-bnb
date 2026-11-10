@@ -28,6 +28,7 @@ def test_space_page_has_correct_listing_details(
     page: Page, db_connection, test_web_address
 ):
     db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
 
     # Check the database directly
     result = db_connection.execute(
