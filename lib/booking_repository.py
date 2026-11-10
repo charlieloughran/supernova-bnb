@@ -9,7 +9,7 @@ class BookingRepository:
         rows = self._connection.execute('SELECT * from bookings')
         bookings = []
         for row in rows:
-            item = Booking(row["id"], row["space_id"], row["booked_by"], row["date"], row["status"])
+            item = Booking(row["space_id"], row["booked_by"], row["date"], row["status"], row["id"])
             bookings.append(item)
         return bookings
 
@@ -17,7 +17,7 @@ class BookingRepository:
         rows = self._connection.execute(
             'SELECT * from bookings WHERE id = %s', [booking_id])
         row = rows[0]
-        return Booking(row["id"], row["space_id"], row["booked_by"], row["date"], row["status"])
+        return Booking(row["space_id"], row["booked_by"], row["date"], row["status"], row["id"])
 
     def create(self, booking):
         self._connection.execute('INSERT INTO bookings (space_id, booked_by, date, status) VALUES (%s, %s, %s, %s)', [
