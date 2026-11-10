@@ -28,3 +28,8 @@ class BookingRepository:
         self._connection.execute(
             'DELETE FROM bookings WHERE id = %s', [booking_id])
         return None
+
+    def update(self, booking_id, new_status):
+        self._connection.execute(
+            'UPDATE bookings SET status = %s WHERE id = %s', [new_status, booking_id]
+        )

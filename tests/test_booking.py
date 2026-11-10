@@ -16,7 +16,7 @@ We can format bookings to strings nicely
 """
 def test_bookings_format_nicely():
     booking = Booking(3, 2, "2027-01-01", 'requested', 1)
-    assert str(booking) == "Booking(1, 3, 2, 2027-01-01, requested)"
+    assert str(booking) == "Booking(3, 2, 2027-01-01, requested, 1)"
 
 """
 We can compare two identical bookings
