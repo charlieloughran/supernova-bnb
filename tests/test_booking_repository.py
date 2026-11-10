@@ -13,10 +13,10 @@ def test_get_all_records(db_connection):
     bookings = repository.all()
 
     assert bookings == [
-        Booking(1, 3, 2, date(2027, 3, 1), 'requested'),
-        Booking(2, 2, 1, date(2027, 1, 1), 'declined'),
-        Booking(3, 2, 4, date(2027, 1, 2), 'accepted'),
-        Booking(4, 1, 2, date(2027, 2, 11), 'requested')
+        Booking(3, 2, date(2027, 3, 1), 'requested', 1),
+        Booking(2, 1, date(2027, 1, 1), 'declined', 2),
+        Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4)
     ]
 
 """
@@ -28,7 +28,7 @@ def test_get_single_record(db_connection):
     repository = BookingRepository(db_connection)
 
     booking = repository.find(3)
-    assert booking == Booking(3, 2, 4, date(2027, 1, 2), 'accepted')
+    assert booking == Booking(2, 4, date(2027, 1, 2), 'accepted', 3)
 
 """
 When we call BookingRepository#create
@@ -38,15 +38,15 @@ def test_create_record(db_connection):
     db_connection.seed("seeds/bookings.sql")
     repository = BookingRepository(db_connection)
 
-    repository.create(Booking(None, 3, 3, date(2027, 3, 11), 'requested'))
+    repository.create(Booking(3, 3, date(2027, 3, 11), 'requested'))
 
     result = repository.all()
     assert result == [
-        Booking(1, 3, 2, date(2027, 3, 1), 'requested'),
-        Booking(2, 2, 1, date(2027, 1, 1), 'declined'),
-        Booking(3, 2, 4, date(2027, 1, 2), 'accepted'),
-        Booking(4, 1, 2, date(2027, 2, 11), 'requested'),
-        Booking(5, 3, 3, date(2027, 3, 11), 'requested')
+        Booking(3, 2, date(2027, 3, 1), 'requested', 1),
+        Booking(2, 1, date(2027, 1, 1), 'declined', 2),
+        Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4),
+        Booking(3, 3, date(2027, 3, 11), 'requested', 5)
     ]
 
 """
@@ -60,7 +60,7 @@ def test_delete_record(db_connection):
 
     result = repository.all()
     assert result == [
-        Booking(1, 3, 2, date(2027, 3, 1), 'requested'),
-        Booking(2, 2, 1, date(2027, 1, 1), 'declined'),
-        Booking(4, 1, 2, date(2027, 2, 11), 'requested')
+        Booking(3, 2, date(2027, 3, 1), 'requested', 1),
+        Booking(2, 1, date(2027, 1, 1), 'declined', 2),
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4)
     ]
