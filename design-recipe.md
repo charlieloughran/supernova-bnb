@@ -137,13 +137,11 @@ GET 'my-spaces/bookings/accepted' --> shows a list of bookings accepted for your
 
 -- Booker --
 
-GET 'spaces/<booking_id>' --> shows the details of the space to the customer and form to book
+GET 'spaces/<space_id>' --> shows the details of the space to the customer and form containing available dates to book
 
-GET 'spaces/<booking_id>/availability' --> Calendar appears with the dates blocked where unavailable
+POST 'spaces/<space_id>/book --> requests a booking for a space, sending form data to db
 
-POST 'spaces/<booking_id>/book --> requests a booking for a space, sending form data to db
-
-GET 'spaces/<booking_id>/booking_requested' --> booking requested page
+GET 'spaces/<space_id>/booking_requested' --> booking requested page
 
 
 
