@@ -1,24 +1,17 @@
 # lib/user.py
 
+
 class User:
     def __init__(
-        self,
-        first_name: str,
-        surname: str,
-        email: str,
-        password: str,
-        id: int | None = None,
+        self, name: str, email: str, password_hash: str, id: int | None = None
     ) -> None:
-
-        self.first_name = first_name
-        self.surname = surname
+        self.name = name
         self.email = email
-        self.password = password
+        self.password_hash = password_hash
         self.id = id
-        # self.dob = dob
 
     def __repr__(self):
-        return f"User({self.first_name}, {self.surname}, {self.email}, {self.id})"
+        return f"User({self.name}, {self.email}, {self.id})"
 
     def __eq__(self, other):
         if not isinstance(other, User):

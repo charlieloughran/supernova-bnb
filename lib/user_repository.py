@@ -1,4 +1,4 @@
-# user_repository.py
+# lib/user_repository.py
 
 from lib.user import User
 from lib.database_connection import DatabaseConnection
@@ -10,8 +10,8 @@ class UserRepository:
 
     def create(self, user: User) -> None:
         self._connection.execute(
-            "insert into users (first_name, surname, email, password) VALUES (%s, %s, %s, %s)",
-            [user.first_name, user.surname, user.email, user.password],
+            "insert into users (name, email, password_hash) VALUES (%s, %s, %s)",
+            [user.name, user.email, user.password_hash],
         )
 
     def find_by_email(self, email: str) -> User | None:
@@ -21,20 +21,12 @@ class UserRepository:
         if not rows:
             return None
         row = rows[0]
-        return User(
-            row["first_name"], row["surname"], row["email"], row["password"], row["id"]
-        )
+        return User(row["name"], row["email"], row["password_hash"], row["id"])
 
     def all(self) -> list[User]:
         rows = self._connection.execute("select * from users order by id")
         return [
-            User(
-                row["first_name"],
-                row["surname"],
-                row["email"],
-                row["password"],
-                row["id"],
-            )
+            User(row["name"], row["email"], row["password_hash"], row["id"])
             for row in rows
         ]
 
@@ -43,6 +35,4 @@ class UserRepository:
         if not rows:
             return None
         row = rows[0]
-        return User(
-            row["first_name"], row["surname"], row["email"], row["password"], row["id"]
-        )
+        return User(row["name"], row["email"], row["password_hash"], row["id"])
