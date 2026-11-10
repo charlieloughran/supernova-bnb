@@ -14,17 +14,33 @@ def test_get_space_details_returns_correctly():
 """
 space.html shows the correct space listing
 """
-def test_space_page_has_correct_listing_details(page: Page, db_connection, test_web_address):
+# def test_space_page_has_correct_listing_details(page: Page, db_connection, test_web_address):
+#     db_connection.seed("seeds/spaces.sql")
+#     db_connection.seed("seeds/bookings.sql")
+
+#     page.goto(f"http://{test_web_address}/spaces/2")
+
+#     assert page.locator('.space_details h2').all_text_contents() == ["Venus"]
+#     assert page.locator('.space_details h3').all_text_contents()  == ["For the fly trap lovers"]
+
+
+def test_space_page_has_correct_listing_details(
+    page: Page, db_connection, test_web_address
+):
     db_connection.seed("seeds/spaces.sql")
+
+    # Check the database directly
+    result = db_connection.execute(
+        "SELECT * FROM spaces WHERE id = %s",
+        [2]
+    )
+
+    print("DATABASE RESULT:", result)
 
     page.goto(f"http://{test_web_address}/spaces/2")
 
-    print("PAGE TITLE:", page.title())
+    print("PAGE STATUS:", page.url)
     print("PAGE CONTENT:", page.locator("body").inner_text())
-
-    print("STATUS:", page.request.get(
-        f"http://{test_web_address}/spaces/2"
-    ).status)
 
     assert page.locator('.space_details h2').all_text_contents() == ["Venus"]
 
