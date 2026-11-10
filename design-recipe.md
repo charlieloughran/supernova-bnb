@@ -66,7 +66,7 @@ As a Booking Maker, I would like to see if my booking has been accepted or decli
     - `name` (String, Not Null)
     - `email` (String, Unique, Not Null)
     - `password_hash` (String, Not Null)
-    - `role` (Enum: 'admin', 'actor')
+
 
 2. `spaces`
     - `id` (Primary Key, Serial/Integer)
