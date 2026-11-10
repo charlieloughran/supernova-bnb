@@ -68,16 +68,17 @@ def create_session():
     password = request.form["password"]
 
     user = user_repository.find_by_email(email)
-    if user is not None:
-        if check_password_hash(user.password_hash, password):
-            session["user_id"] = user.id
-            session["name"] = user.name
-            session["email"] = user.email
-            return redirect('/')
-        else:
-            return redirect('/login/new')
+    if user is not None and check_password_hash(user.password_hash, password):
+        session["user_id"] = user.id
+        session["name"] = user.name
+        session["email"] = user.email
+        return redirect('/')
     else:
-        return redirect('/login/new')
+        return render_template(
+            'login.html', 
+            error="Incorrect email or password.",
+            email=email
+        )
 
 
 # These lines start the server if you run this file directly
