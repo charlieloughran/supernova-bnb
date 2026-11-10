@@ -38,6 +38,15 @@ def create_user():
     user_repository = UserRepository(connection)
 
     user_details = request.form
+
+    if user_repository.find_by_email(user_details["email"]) is not None:
+        return render_template(
+            'signup.html', 
+            error="An account with that email already exists.",
+            name=user_details["name"],
+            email=user_details["email"]
+        )
+    
     user_repository.create(
         user = User(name=user_details["name"], 
                     email=user_details["email"], 
@@ -75,4 +84,9 @@ def create_session():
 # They also start the server configured to use the test database
 # if started in test mode.
 if __name__ == '__main__':
-    app.run(debug=True, port=int(os.environ.get('PORT', 5001)))
+    test_mode = os.environ.get('APP_ENV') == 'test'
+    app.run(
+        debug=not test_mode,
+        use_reloader=not test_mode,
+        port=int(os.environ.get('PORT', 5001)),
+    )
