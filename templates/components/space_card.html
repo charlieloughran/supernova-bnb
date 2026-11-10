@@ -6,9 +6,9 @@
         <p>{{space.price_per_night}}£</p>
     </div>
     <p class="space_card_description">{{space.description}}</p>
-    <form action="/spaces/<{{space.id}}>" method="post">
+    <form action="/spaces/{{space.id}}>" method="post">
         <input type="hidden" name="space_id" value="{{space.id}}">
-        <button type="submit" class="btn-secondary">View Space</button>
+        <button type="submit" class="btn-secondary">Book Space</button>
     </form>
 </article>
 {% endmacro %}
