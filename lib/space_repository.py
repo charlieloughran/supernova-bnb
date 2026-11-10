@@ -34,3 +34,16 @@ class SpaceRepository:
         self._connection.execute(
             'DELETE FROM spaces WHERE id = %s', [space_id])
         return None
+
+
+
+    # Delete an space by their id
+    def find_by_owner_id(self, owner_id):
+        rows = self._connection.execute(
+            'SELECT id, name, description, availability_start_date, availability_end_date, price_per_night, image_url, owner_id FROM spaces WHERE owner_id = %s', [owner_id])
+        user_spaces = []
+        for row in rows:
+            item = Space(row["name"], row["description"], row["availability_start_date"], row["availability_end_date"], row["price_per_night"], row["image_url"], row["owner_id"], row["id"])
+            user_spaces.append(item)
+        return user_spaces
+
