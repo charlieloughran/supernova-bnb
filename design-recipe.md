@@ -119,11 +119,11 @@ POST '/register/new' --> Sends the user data to the database
 
 -- Space Owner --
 
+GET '/my-spaces' --> shows a list of all the space owners spaces
+
 GET '/my-spaces/add' --> shows form to add details for the space
 
 POST 'my-spaces/new' --> sends new space details to database and adds to list
-
-GET '/my-spaces' --> shows a list of all the space owners spaces
 
 GET 'my-spaces/bookings/requested' --> shows a list of booking requests for your spaces
 
