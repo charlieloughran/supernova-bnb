@@ -14,11 +14,12 @@ def test_get_space_details_returns_correctly():
 """
 space.html shows the correct space listing
 """
-def test_space_page_has_correct_listing_details(page: Page):
+def test_space_page_has_correct_listing_details(page: Page, db_connection, test_web_address):
+    db_connection.seed("seeds/spaces.sql")
     connection = DatabaseConnection(test_mode=True)
     connection.connect()
 
-    page.goto("http://127.0.0.1:5001/spaces/2")
+    page.goto(f"http://{test_web_address}/spaces/2")
 
     assert page.locator('.space_details h2').all_text_contents() == ["Venus"]
     assert page.locator('.space_details h3').all_text_contents()  == ["For the fly trap lovers"]
