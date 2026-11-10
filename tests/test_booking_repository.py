@@ -1,6 +1,7 @@
 from lib.booking_repository import *
 from lib.booking import *
 from datetime import date
+from lib.database_connection import DatabaseConnection
 
 """
 When we call BookingRepository#all
@@ -81,3 +82,20 @@ def test_update_record(db_connection):
         Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
         Booking(1, 2, date(2027, 2, 11), 'requested', 4)
     ]
+    
+"""
+When we call BookingRepository#find_by_user
+it returns the specified's user bookings
+"""
+
+def test_find_by_user_id_returns_their_bookings(db_connection: DatabaseConnection):
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    
+    result = repository.find_by_user_id(2)
+    
+    assert result == [
+        Booking(3, 2, date(2027, 3, 1), 'requested', 1),
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4),
+    ] 
+    
