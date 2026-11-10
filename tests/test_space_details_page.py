@@ -7,7 +7,6 @@ get_space_details returns status 200
 """
 def test_get_space_details_returns_correctly():
     client = app.test_client()
-
     response = client.get("/spaces/1")
 
     assert response.status_code == 200
@@ -16,7 +15,7 @@ def test_get_space_details_returns_correctly():
 space.html shows the correct space listing
 """
 def test_space_page_has_correct_listing_details(page: Page):
-    connection = DatabaseConnection()
+    connection = DatabaseConnection(test_mode=True)
     connection.connect()
 
     page.goto("http://127.0.0.1:5001/spaces/2")

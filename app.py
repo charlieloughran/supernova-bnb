@@ -20,7 +20,7 @@ def get_index():
 # GET route gets details of the space for the space details page
 @app.route('/spaces/<int:space_id>', methods=['GET'])
 def get_space_details(space_id):
-    connection = DatabaseConnection()
+    connection = DatabaseConnection(test_mode=True)
     connection.connect()
 
     # find space details
