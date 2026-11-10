@@ -117,13 +117,35 @@ POST '/register/new' --> Sends the user data to the database
 
 ==== SPACES ====
 
-GET '/spaces' --> shows the registration form
-POST '/spaces/new' --> Space Owner uploades a space to the site
+-- Space Owner --
 
-GET 'spaces/<space_id>' --> shows the space and the details
+GET '/my-spaces/add' --> shows form to add details for the space
 
-GET 'spaces/<space_id>/bookings' --> shows the booking form
-POST 'spaces/<space_id>/bookings/new' --> New booking requets
+POST 'my-spaces/new' --> sends new space details to database and adds to list
+
+GET '/my-spaces' --> shows a list of all the space owners spaces
+
+GET 'my-spaces/bookings/requested' --> shows a list of booking requests for your spaces
+
+GET 'my-spaces/bookings/requested/<booking_id>' --> shows the details of the booking for that space
+
+POST 'my-spaces/bookings/requested/<booking_id>/accept' --> Accepts the booking, updates status of the row in db
+
+POST 'my-spaces/bookings/requested/<booking_id>/deny' --> Deny the booking, updates status of the row in db
+
+GET 'my-spaces/bookings/accepted' --> shows a list of bookings accepted for your spaces
+
+-- Booker --
+
+GET 'spaces/<booking_id>' --> shows the details of the space to the customer and form to book
+
+GET 'spaces/<booking_id>/availability' --> Calendar appears with the dates blocked where unavailable
+
+POST 'spaces/<booking_id>/book --> requests a booking for a space, sending form data to db
+
+GET 'spaces/<booking_id>/booking_requested' --> booking requested page
+
+
 
 
 ==== BOOKINGS ===
