@@ -7,6 +7,25 @@
     </head>
     <body>
         {% include "components/nav.html" %}
-        <p>This is a list of my spaces</p>
+        <h1>Spaces</h1>
+        {% for space in spaces %}
+        <article>
+            <div class="image-wrapper">
+                <img src="{space.image_url}">
+            </div>
+                <figcaption>
+                    <p class="space-name">
+                        {{ space.name }}
+                    </p>
+                    <p class="space-description">
+                        {{ space.description }}
+                    </p>
+                    <p class="price-per-night">
+                        £{{ space.price_per_night }}
+                    </p>
+                </figcaption>
+            
+        </article>
+        {% endfor %}
     </body>
 </html>

@@ -23,8 +23,6 @@ We can render the my-spaces page
 def test_get_my_spaces(page, test_web_address):
     page.goto(f"http://{test_web_address}/my_spaces")
 
-    # We look at the <p> tag
-    p_tag = page.locator("p")
+    h1_tag = page.locator("h1")
 
-    # We assert that it has the text "This is the homepage."
-    expect(p_tag).to_have_text("This is a list of my spaces")
+    expect(h1_tag).to_have_text("Spaces")
