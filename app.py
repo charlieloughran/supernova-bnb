@@ -35,6 +35,18 @@ def get_space_details(space_id):
     return render_template('space.html', space=space, booked_dates=booked_dates)
 
 
+@app.route('/my_spaces', methods=['GET'])
+def get_my_spaces():
+    db_connection = get_flask_database_connection(app)
+    space_repo = SpaceRepository(db_connection)
+
+    #Gets Username/User ID from session
+
+    all_spaces = space_repo.find_by_owner_id(2) #Passes Username/ User ID as parameter
+
+    # Lists all user spaces on my-spaces template
+    return render_template('my-spaces.html', spaces=all_spaces)
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.

@@ -77,3 +77,20 @@ def test_delete_record(db_connection):
         Booking(2, 1, date(2027, 1, 1), 'declined', 2),
         Booking(1, 2, date(2027, 2, 11), 'requested', 4)
     ]
+
+"""
+When we call BookingRepository#update
+We update the specified booking record's status in the database.
+"""
+def test_update_record(db_connection):
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    repository.update(1, 'accepted')
+
+    result = repository.all()
+    assert result == [
+        Booking(3, 2, date(2027, 3, 1), 'accepted', 1),
+        Booking(2, 1, date(2027, 1, 1), 'declined', 2),
+        Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4)
+    ]
