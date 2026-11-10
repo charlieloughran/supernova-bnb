@@ -21,7 +21,7 @@ We can render the my-spaces page
 """
 
 def test_get_my_spaces(page, test_web_address):
-    page.goto(f"http://{test_web_address}/my-spaces")
+    page.goto(f"http://{test_web_address}/my_spaces")
 
     # We look at the <p> tag
     p_tag = page.locator("p")

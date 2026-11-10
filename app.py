@@ -16,7 +16,7 @@ def get_index():
     return render_template('index.html')
 
 
-@app.route('/my-spaces', methods=['GET'])
+@app.route('/my_spaces', methods=['GET'])
 def get_my_spaces():
     return render_template('my-spaces.html')
 
