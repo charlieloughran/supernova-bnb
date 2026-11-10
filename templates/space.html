@@ -9,13 +9,13 @@
 
 <body>
     {% include 'components/nav.html' %}
-    <section>
+    <section class="space_details">
         <img src={{ space.image_url }}>
         <h2>{{ space.name }}</h2>
         <h3>{{ space.description }}</h3>
     </section>
 
-    <section>
+    <section class="booking_form">
         <h2>Reserve your space</h2>
         <h1>£{{ space.price_per_night }}</h1>
         <form method="POST" action="/spaces/{{ space.id }}/book">
