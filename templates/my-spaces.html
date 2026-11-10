@@ -7,11 +7,11 @@
     </head>
     <body>
         {% include "components/nav.html" %}
-        <h1>Spaces</h1>
+        <h2>Spaces</h2>
         {% for space in spaces %}
         <article>
             <div class="image-wrapper">
-                <img src="{space.image_url}">
+                <img src="{{space.image_url}}">
             </div>
                 <figcaption>
                     <p class="space-name">
