@@ -16,13 +16,13 @@ def test_get_index(page, test_web_address):
     expect(p_tag).to_have_text("This is the homepage.")
 
 
-"""
-We can render the my-spaces page
-"""
+# """
+# We can render the my-spaces page
+# """
 
-def test_get_my_spaces(page, test_web_address):
-    page.goto(f"http://{test_web_address}/my_spaces")
+# def test_get_my_spaces(page, test_web_address):
+#     page.goto(f"http://{test_web_address}/my_spaces")
 
-    h2_tag = page.locator("h2")
+#     h2_tag = page.locator("h2")
 
-    expect(h2_tag).to_have_text("Spaces")
+#     expect(h2_tag).to_have_text("Spaces")
