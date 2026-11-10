@@ -6,7 +6,7 @@ from lib.space_repository import SpaceRepository
 Render a list of all spaces
 """
 
-def test_my_spaces_list_shown(page: Page):
+def test_my_spaces_list_shown(page: Page, test_web_address):
     db_connection = DatabaseConnection(test_mode=True)
     db_connection.connect()
     db_connection.seed('seeds/spaces.sql')
@@ -15,7 +15,7 @@ def test_my_spaces_list_shown(page: Page):
     user_spaces = repository.find_by_owner_id(2)
     space_names = [space.name for space in user_spaces]
 
-    page.goto(f"http://127.0.0.1:5001//my_spaces")
+    page.goto(f"http://{test_web_address}/my_spaces")
 
 
     
@@ -41,7 +41,7 @@ Render a form to fill in space details
 Fill a form for space details and save to DB
 """
 
-def test_add_space_to_list(page: Page):
+def test_add_space_to_list(page: Page, test_web_address):
     db_connection = DatabaseConnection(test_mode=True)
     db_connection.connect()
     db_connection.seed('seeds/spaces.sql')
@@ -50,7 +50,7 @@ def test_add_space_to_list(page: Page):
     
     
 
-    page.goto(f"http://127.0.0.1:5001/my_spaces/add")
+    page.goto(f"http://{test_web_address}/my_spaces/add")
 
     page.get_by_label("Name").fill('Neptune')
     page.get_by_label("Description").fill('For the water lovers')
