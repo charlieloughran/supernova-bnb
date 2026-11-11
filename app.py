@@ -12,9 +12,14 @@ app = Flask(__name__)
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5001/index
-@app.route('/index', methods=['GET'])
+@app.route('/', methods=['GET'])
 def get_index():
-    return render_template('index.html')
+    connection = get_flask_database_connection(app)
+    connection.connect()
+    repo = SpaceRepository(connection)
+    spaces = repo.all()
+    
+    return render_template('index.html',spaces=spaces)
 
 
 @app.route('/my_spaces', methods=['GET'])
