@@ -2,6 +2,7 @@ body {
     font-size: 18px;
     font-family: sans-serif;
     --primary-color: #6155F5;
+    --secondary-color: #F4F1FF;
     --heading-text: 50px;
     --sub-text: 30px;
     --p-text: 16px;
@@ -104,12 +105,6 @@ nav > ul > li > *{
 .space_card_header > p{
     color: #666375;
 }
-/* .space-left-container{
-
-}
-.space-right-container{
-
-} */
 .space-parent{
     display: flex;
     width: 100%;
@@ -120,6 +115,56 @@ nav > ul > li > *{
     height: 600px;
     display: flex;
     flex-direction: column;
+    gap: -10px;
+    justify-content: flex-start;
     box-sizing: border-box;
     padding: 10px 5vw;
+}
+.space-parent img{
+    border-radius: 30px;
+}
+#space-right-container{
+    border: 1px solid rgba(0, 0, 0, 0.527);
+    border-radius: 30px;
+    min-width: 400px;
+    height: 400px;
+    width: 40vw;
+}
+.space-form{
+    position: relative;
+    padding-top: 50px;
+    display: flex;
+    justify-content: flex-end;
+}
+.space-form > label{
+    position: absolute;
+    top: 0px;
+    background-color: var(--secondary-color);
+    width: 100%;
+    border-radius: 20px;
+    height: 30px;
+    z-index: -1;
+    padding: 30px 10px;
+}
+.space-form > input[type='date']{
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+}
+.space-form > input[type='submit']{
+    position: absolute;
+    top: 100px;
+    padding: 20px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background-color: var(--primary-color);
+    width: 105%;
+    color: white;
+    cursor: pointer;
 }

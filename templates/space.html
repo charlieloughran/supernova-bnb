@@ -18,10 +18,10 @@
             <h3>{{ space.description }}</h3>
         </section>
 
-        <section class="booking_form space-right-container">
+        <section class="booking_form" id="space-right-container">
             <h2>Reserve your space</h2>
             <h1>£{{ space.price_per_night }}</h1>
-            <form method="POST" action="/spaces/{{ space.id }}">
+            <form method="POST" action="/spaces/{{ space.id }}" class="space-form">
                 <label for="booking_date">Select date:</label>
                 <input type="date" id="booking_date" name="booking_date"
                     min="{{ space.availability_start_date.strftime('%Y-%m-%d') }}"
