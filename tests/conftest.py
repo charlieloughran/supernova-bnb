@@ -22,7 +22,7 @@ def test_web_address(xprocess):
     port = str(random.randint(4000, 4999))
     class Starter(ProcessStarter):
         env = {"PORT": port, "APP_ENV": "test", **os.environ}
-        pattern = "Debugger PIN"
+        pattern = "Running on"
         args = [python_executable, app_file]
 
     xprocess.ensure("flask_test_server", Starter)

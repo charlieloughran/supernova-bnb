@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SupernovaBnB - Add a Space</title>
+
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        {% include "components/nav.html" %}
+        <h2>Add a  Space</h2>
+        <form action="/my_spaces/new" method="POST">
+
+            <label for="space-name">Name</label>
+            <input id="space-name" name="space-name" type="text" placeholder="Enter Name of Space">
+
+            <label for="space-description">Description</label>
+            <textarea id="space-description" name="space-description" rows="5" placeholder="Enter Description"></textarea>
+
+            <label for="availability-start-date">Available From</label>
+            <input id="availability-start-date"  name="availability-start-date" type="date">
+
+            <label for="availability-end-date">Available To</label>
+            <input id="availability-end-date" name="availability-end-date" type="date">
+
+            <label for="price-per-night">Price (per night)</label>
+            <input id="price-per-night" name="price-per-night" type="number">
+            
+            <label for="image-url">Upload Image of Space</label>
+            <input id="image-url" name="image-url" type="file">
+
+            <button type="submit" class="btn">Submit</button>
+
+        </form>
+    </body>
+</html>

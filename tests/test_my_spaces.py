@@ -26,5 +26,43 @@ def test_my_spaces_list_shown(page: Page, test_web_address):
     assert space_names == spaces.all_inner_texts()
 
 
+"""
+Render a form to fill in space details
+
+"""
+# def test_show_form_to_add_space(page: Page, test_web_address):
+#     assert page.url == f"http://{test_web_address}/my_spaces/add"
 
 
+
+
+
+"""
+Fill a form for space details and save to DB
+"""
+
+def test_add_space_to_list(page: Page, test_web_address):
+    db_connection = DatabaseConnection(test_mode=True)
+    db_connection.connect()
+    db_connection.seed('seeds/spaces.sql')
+
+    repository = SpaceRepository(db_connection)
+    
+    
+
+    page.goto(f"http://{test_web_address}/my_spaces/add")
+
+    page.get_by_label("Name").fill('Neptune')
+    page.get_by_label("Description").fill('For the water lovers')
+    page.get_by_label("Available From").fill('2026-04-25')
+    page.get_by_label("Available To").fill('2027-04-25')
+    page.get_by_label("Price (per night)").fill('220')
+    page.get_by_label("Upload Image of Space").set_input_files("static/neptune.jpg")
+    page.get_by_role("button", name="Submit").click()
+
+
+    spaces = page.locator('.space-name').all_inner_texts()
+
+    user_spaces = repository.find_by_owner_id(2)
+    space_names = [user_space.name for user_space in user_spaces]
+    assert space_names == spaces
