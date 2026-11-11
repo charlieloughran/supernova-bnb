@@ -131,5 +131,6 @@ def test_find_by_user_id_returns_their_bookings(db_connection: DatabaseConnectio
     assert result == [
         Booking(3, 2, date(2027, 3, 1), 'requested', 1),
         Booking(1, 2, date(2027, 2, 11), 'requested', 4),
+        Booking(2, 2, date(2027, 2, 11), 'requested', 5)
     ] 
     
