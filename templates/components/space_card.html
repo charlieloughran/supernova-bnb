@@ -1,6 +1,6 @@
 {% macro space_card(space) %}
 <article class="space_card_container">
-    <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png" alt="image of the location">
+    <img src="{{ space.image_url }}" alt="image of the location">
     <div class="space_card_header">
         <h3>{{ space.name }}</h3>
         <p>{{space.price_per_night}}£</p>
