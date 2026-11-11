@@ -136,6 +136,18 @@ def add_a_space():
 
     return redirect('/my_spaces')
 
+
+@app.route('/my_spaces/requests', methods=['GET'])
+def see_list_of_requests():
+    db_connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(db_connection)
+
+    user_id = 2
+    user_bookings = booking_repo.find_by_user_and_status(user_id, "requested")
+
+    return render_template('requests.html' , bookings=user_bookings)
+
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
