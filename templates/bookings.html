@@ -18,6 +18,11 @@
         <p class="booking-price-per-night"> {{ spaces_by_id[booking.space_id].price_per_night }}</p>
         <a href="/spaces/{{ booking.space_id }}">View space</a>
     </article>
+
+    {% else %}
+    <p class="no-bookings-message">You have no bookings yet.</p>
+    <a href="/">Browse spaces</a>
+
     {% endfor %}
 </body>
 </html>

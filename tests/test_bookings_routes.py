@@ -83,4 +83,15 @@ def test_bookings_cards_display_card_details(page: Page, login, db_connection: D
     expect(cards.nth(1).get_by_role("link")).to_have_attribute("href", "/spaces/1")
     expect(cards.nth(2).get_by_role("link")).to_have_attribute("href", "/spaces/2")
     
-# def test_bookings_shows_message_when_user_has_no_bookings():
+def test_bookings_shows_message_when_user_has_no_bookings(page: Page, login, db_connection: DatabaseConnection, test_web_address):
+    db_connection.seed('seeds/users.sql')
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
+    db_connection.execute("DELETE FROM bookings WHERE booked_by = %s", [2])
+
+    login("bob@example.com", "password2") #this is booked_by = 2 per above
+    
+    page.goto(f"http://{test_web_address}/bookings")
+    
+    expect(page.locator(".booking-card")).to_have_count(0)
+    expect(page.locator(".no-bookings-message")).to_have_text("You have no bookings yet.")
