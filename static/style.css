@@ -25,7 +25,7 @@ nav > a{
 nav > ul{
     list-style-type: none;
     display: flex;
-    min-width: 400px;
+    min-width: 600px;
     justify-content: space-between;
     align-items: center;
     margin-right: 80px;
@@ -43,7 +43,7 @@ nav > ul > li > *{
     display: grid;
     place-items: center;
     color: var(--primary-color);
-    border: none;
+    border: 1px solid var(--primary-color);
 }
 .btn-primary > *{
     color: var(--primary-color);
