@@ -42,6 +42,13 @@ def get_bookings():
     
     #Lists all bookings relating to the authenticated user
     return render_template('bookings.html', bookings=user_bookings)
+
+@app.route('/bookings/<int:id>')
+def get_booking(id):
+    db_connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(db_connection)
+    booking = booking_repo.find(id)
+    return render_template('booking.html', booking=booking)
     
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

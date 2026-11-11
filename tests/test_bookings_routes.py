@@ -1,6 +1,6 @@
 # tests/test_bookings_routes.py
 
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect
 from lib.database_connection import DatabaseConnection
 from lib.booking_repository import BookingRepository
 
@@ -9,7 +9,7 @@ from lib.booking_repository import BookingRepository
 
 USER_ID = 2
 
-def test_bookings_list_shown(page: Page, db_connection: DatabaseConnection, test_web_address,):
+def test_bookings_list_shown(page: Page, db_connection: DatabaseConnection, test_web_address):
     db_connection.seed('seeds/bookings.sql')
     
     repository = BookingRepository(db_connection)
@@ -22,3 +22,15 @@ def test_bookings_list_shown(page: Page, db_connection: DatabaseConnection, test
 
     assert statuses == shown.all_inner_texts()
     
+def test_booking_detail_shown(
+    page: Page, db_connection: DatabaseConnection, test_web_address
+):
+    db_connection.seed("seeds/bookings.sql")
+
+    repository = BookingRepository(db_connection)
+    booking = repository.find(1)
+
+    page.goto(f"http://{test_web_address}/bookings/1")
+
+    expect(page.locator(".booking-date")).to_have_text(str(booking.date))
+    expect(page.locator(".booking-status")).to_have_text(booking.status)
