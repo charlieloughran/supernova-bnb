@@ -78,3 +78,18 @@ def test_delete_record(db_connection):
         Space('Uranus', 'For the lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/uranus-space.png', 3, 7),
 
     ]
+
+"""
+When we call SpaceRepository#find_by_owner_id
+We find all records with the owner id specified.
+"""
+
+def test_find_by_owner(db_connection):
+    db_connection.seed("seeds/spaces.sql")
+    repository = SpaceRepository(db_connection)
+    user_spaces = repository.find_by_owner_id(2)
+
+    assert user_spaces == [
+        Space('Venus', 'For the fly trap lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/venus-space.png', 2, 2),
+        Space('Saturn', 'For the ring lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/saturn-space.png', 2, 6)
+    ]

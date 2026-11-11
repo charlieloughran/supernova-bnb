@@ -20,15 +20,28 @@ def test_get_all_records(db_connection):
     ]
 
 """
-When we call BookingRepository#find
+When we call BookingRepository#find_by_booking
 We get a single Booking object reflecting the seed data.
 """
 def test_get_single_record(db_connection):
     db_connection.seed("seeds/bookings.sql")
     repository = BookingRepository(db_connection)
 
-    booking = repository.find(3)
+    booking = repository.find_by_booking(3)
     assert booking == Booking(2, 4, date(2027, 1, 2), 'accepted', 3)
+
+"""
+When we call BookingRepository#find_by_space_and_status
+We get a list of bookings for the specified space.
+"""
+def test_get_accepted_bookings_for_space(db_connection):
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+
+    bookings = repository.find_by_space_and_status(2, "accepted")
+    assert bookings == [
+                        Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
+                        ]
 
 """
 When we call BookingRepository#create
@@ -62,5 +75,22 @@ def test_delete_record(db_connection):
     assert result == [
         Booking(3, 2, date(2027, 3, 1), 'requested', 1),
         Booking(2, 1, date(2027, 1, 1), 'declined', 2),
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4)
+    ]
+
+"""
+When we call BookingRepository#update
+We update the specified booking record's status in the database.
+"""
+def test_update_record(db_connection):
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+    repository.update(1, 'accepted')
+
+    result = repository.all()
+    assert result == [
+        Booking(3, 2, date(2027, 3, 1), 'accepted', 1),
+        Booking(2, 1, date(2027, 1, 1), 'declined', 2),
+        Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
         Booking(1, 2, date(2027, 2, 11), 'requested', 4)
     ]

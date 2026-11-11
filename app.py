@@ -2,7 +2,9 @@ import os
 from lib.user import User
 from lib.user_repository import UserRepository
 from flask import Flask, request, render_template, redirect, session
-from lib.database_connection import get_flask_database_connection
+from lib.database_connection import *
+from lib.space_repository import *
+from lib.booking_repository import *
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 
@@ -24,9 +26,14 @@ def login_required(f):
 # Returns the homepage
 # Try it:
 #   ; open http://localhost:5001/index
-@app.route('/index', methods=['GET'])
+@app.route('/', methods=['GET'])
 def get_index():
-    return render_template('index.html')
+    connection = get_flask_database_connection(app)
+    connection.connect()
+    repo = SpaceRepository(connection)
+    spaces = repo.all()
+    
+    return render_template('index.html',spaces=spaces)
 
 @app.route('/register/new', methods=['GET'])
 def get_signup_form():
@@ -80,6 +87,35 @@ def create_session():
             email=email
         )
 
+# GET route gets details of the space for the space details page
+@app.route('/spaces/<int:space_id>', methods=['GET'])
+def get_space_details(space_id):
+    connection = DatabaseConnection(test_mode=True)
+    connection.connect()
+
+    # find space details
+    space_repository = SpaceRepository(connection)
+    space = space_repository.find(space_id)
+
+    # find accepted bookings for space
+    booking_repository = BookingRepository(connection)
+    bookings = booking_repository.find_by_space_and_status(space_id, 'accepted')
+    booked_dates = [booking.date.strftime('%Y-%m-%d') for booking in bookings]
+
+    return render_template('space.html', space=space, booked_dates=booked_dates)
+
+
+@app.route('/my_spaces', methods=['GET'])
+def get_my_spaces():
+    db_connection = get_flask_database_connection(app)
+    space_repo = SpaceRepository(db_connection)
+
+    #Gets Username/User ID from session
+
+    all_spaces = space_repo.find_by_owner_id(2) #Passes Username/ User ID as parameter
+
+    # Lists all user spaces on my-spaces template
+    return render_template('my-spaces.html', spaces=all_spaces)
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
