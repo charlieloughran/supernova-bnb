@@ -1,7 +1,7 @@
 import os
 from lib.user import User
 from lib.user_repository import UserRepository
-from flask import Flask, request, render_template, redirect, session
+from flask import Flask, request, render_template, redirect, session, flash
 from lib.database_connection import *
 from lib.space_repository import *
 from lib.space import Space
@@ -92,20 +92,36 @@ def create_session():
 # GET route gets details of the space for the space details page
 @app.route('/spaces/<int:space_id>', methods=['GET'])
 def get_space_details(space_id):
-    connection = DatabaseConnection(test_mode=True)
-    connection.connect()
+    db_connection = get_flask_database_connection(app)
 
     # find space details
-    space_repository = SpaceRepository(connection)
+    space_repository = SpaceRepository(db_connection)
     space = space_repository.find(space_id)
 
     # find accepted bookings for space
-    booking_repository = BookingRepository(connection)
+    booking_repository = BookingRepository(db_connection)
     bookings = booking_repository.find_by_space_and_status(space_id, 'accepted')
     booked_dates = [booking.date.strftime('%Y-%m-%d') for booking in bookings]
 
     return render_template('space.html', space=space, booked_dates=booked_dates)
 
+@app.route('/spaces/<int:space_id>', methods=['POST'])
+@login_required
+def request_booking(space_id):
+    db_connection = get_flask_database_connection(app)
+    booking_repository = BookingRepository(db_connection)
+
+    # get date from form and user_id from session data
+    booking_date = request.form['booking_date']
+    booked_by = session["user_id"]
+
+    # create the booking
+    booking = Booking(space_id, booked_by, booking_date, 'requested')
+    booking_repository.create(booking)
+
+    # success message
+    flash("Booking requested!", "success")
+    return redirect(f'/spaces/{space_id}')
 
 @app.route('/my_spaces', methods=['GET'])
 def get_my_spaces():

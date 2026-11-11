@@ -18,7 +18,7 @@
     <section class="booking_form">
         <h2>Reserve your space</h2>
         <h1>£{{ space.price_per_night }}</h1>
-        <form method="POST" action="/spaces/{{ space.id }}/book">
+        <form method="POST" action="/spaces/{{ space.id }}">
             <label for="booking_date">Select date:</label>
             <input 
                 type="date" 
@@ -31,7 +31,7 @@
             <p id="date_error" style="color: #d9534f; display: none;">
                 Sorry, this date is already booked. Please select another date.
             </p>
-            <input type="submit" value="Book">
+            <input type="submit" value="Request booking">
         </form>
         <script>
 
@@ -56,6 +56,15 @@
             });
 
         </script>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
     </section>
 </body>
 </html>
