@@ -14,8 +14,8 @@
 <body>
     {% from 'components/space_card.html' import space_card %}
     {% include "components/nav.html" %}
-    {% if session.get('username') %}
-        <h1 style="font-weight: 300; margin-left: 80px;">Welcome {{ session['username'] }}</h1>
+    {% if session.get('name') %}
+        <h1 style="font-weight: 300; margin-left: 80px;">Welcome {{ session['name'] }}</h1>
     {% else %}
         <h1 style="font-weight: 300; margin-left: 80px;">Welcome Guest</h1>
     {% endif %}
