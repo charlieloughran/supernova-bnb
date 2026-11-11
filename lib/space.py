@@ -8,7 +8,7 @@ class Space:
         self.price_per_night = price_per_night
         self.image_url = image_url
         self.owner_id = owner_id
-
+        
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 

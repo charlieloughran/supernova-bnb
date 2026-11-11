@@ -30,8 +30,17 @@ def test_web_address(xprocess):
     yield f"localhost:{port}"
 
     xprocess.getinfo("flask_test_server").terminate()
+    
+@pytest.fixture
+def login(page, test_web_address):
+    def _login(email, password):
+        page.goto(f"http://{test_web_address}/login/new")
+        page.get_by_placeholder("Email").fill(email)
+        page.get_by_placeholder("Password").fill(password)
+        page.get_by_role("button", name="Log-in").click()
 
-
+    return _login
+        
 # Now, when we create a test, if we allow it to accept a parameter called
 # `db_connection` or `test_web_address`, Pytest will automatically pass in the
 # objects we created above.
