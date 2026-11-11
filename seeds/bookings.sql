@@ -16,3 +16,4 @@ INSERT INTO bookings (space_id, booked_by, date, status) VALUES (3, 2, '2027-03-
 INSERT INTO bookings (space_id, booked_by, date, status) VALUES (2, 1, '2027-01-01', 'declined');
 INSERT INTO bookings (space_id, booked_by, date, status) VALUES (2, 4, '2027-01-02', 'accepted');
 INSERT INTO bookings (space_id, booked_by, date, status) VALUES (1, 2, '2027-02-11', 'requested');
+INSERT INTO bookings (space_id, booked_by, date, status) VALUES (2, 2, '2027-02-11', 'requested'); --- Added in to test link between spaces and bookings (joining on space_id)

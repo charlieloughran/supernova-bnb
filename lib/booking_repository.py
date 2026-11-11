@@ -30,6 +30,15 @@ class BookingRepository:
             bookings.append(item)
         return bookings
 
+    def find_by_user_and_status(self, owner_id, booking_status):
+        rows = self._connection.execute(
+            'SELECT bookings.id AS id, space_id, booked_by, date, status FROM bookings JOIN spaces ON bookings.space_id = spaces.id WHERE owner_id = %s and status = %s', [owner_id, booking_status])
+        bookings = []
+        for row in rows:
+            item = Booking(row["space_id"], row["booked_by"], row["date"], row["status"], row["id"])
+            bookings.append(item)
+        return bookings
+
     def create(self, booking):
         self._connection.execute('INSERT INTO bookings (space_id, booked_by, date, status) VALUES (%s, %s, %s, %s)', [
                                 booking.space_id, booking.booked_by, booking.date, booking.status])

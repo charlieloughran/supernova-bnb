@@ -17,7 +17,8 @@ def test_get_all_records(db_connection):
         Booking(3, 2, date(2027, 3, 1), 'requested', 1),
         Booking(2, 1, date(2027, 1, 1), 'declined', 2),
         Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
-        Booking(1, 2, date(2027, 2, 11), 'requested', 4)
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4),
+        Booking( 2, 2, date(2027, 2, 11), 'requested', 5)
     ]
 
 """
@@ -44,6 +45,20 @@ def test_get_accepted_bookings_for_space(db_connection):
                         Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
                         ]
 
+
+"""
+When we call BookingRepository#find_by_user_and_status
+We get a list of all booking requests for the specified user.
+"""
+def test_get_owner_bookings_for_space(db_connection):
+    db_connection.seed("seeds/bookings.sql")
+    repository = BookingRepository(db_connection)
+
+    bookings = repository.find_by_user_and_status(2, "requested")
+    assert bookings == [
+            Booking(2, 2, date(2027, 2, 11), 'requested', 5),
+        ]
+
 """
 When we call BookingRepository#create
 We get a new record in the database.
@@ -60,7 +75,9 @@ def test_create_record(db_connection):
         Booking(2, 1, date(2027, 1, 1), 'declined', 2),
         Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
         Booking(1, 2, date(2027, 2, 11), 'requested', 4),
-        Booking(3, 3, date(2027, 3, 11), 'requested', 5)
+        Booking( 2, 2, date(2027, 2, 11), 'requested', 5),
+        Booking(3, 3, date(2027, 3, 11), 'requested', 6)
+        
     ]
 
 """
@@ -76,7 +93,9 @@ def test_delete_record(db_connection):
     assert result == [
         Booking(3, 2, date(2027, 3, 1), 'requested', 1),
         Booking(2, 1, date(2027, 1, 1), 'declined', 2),
-        Booking(1, 2, date(2027, 2, 11), 'requested', 4)
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4),
+        Booking(2, 2, date(2027, 2, 11), 'requested', 5),
+
     ]
 
 """
@@ -93,7 +112,9 @@ def test_update_record(db_connection):
         Booking(3, 2, date(2027, 3, 1), 'accepted', 1),
         Booking(2, 1, date(2027, 1, 1), 'declined', 2),
         Booking(2, 4, date(2027, 1, 2), 'accepted', 3),
-        Booking(1, 2, date(2027, 2, 11), 'requested', 4)
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4),
+        Booking(2, 2, date(2027, 2, 11), 'requested', 5),
+
     ]
     
 """
@@ -110,5 +131,6 @@ def test_find_by_user_id_returns_their_bookings(db_connection: DatabaseConnectio
     assert result == [
         Booking(3, 2, date(2027, 3, 1), 'requested', 1),
         Booking(1, 2, date(2027, 2, 11), 'requested', 4),
+        Booking(2, 2, date(2027, 2, 11), 'requested', 5)
     ] 
     
