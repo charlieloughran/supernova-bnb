@@ -5,11 +5,10 @@ from playwright.sync_api import Page, expect
 """
 get_space_details returns status 200
 """
-def test_get_space_details_returns_correctly():
-    client = app.test_client()
-    response = client.get("/spaces/1")
+def test_get_space_details_returns_correctly(page: Page, test_web_address):
+    response = page.request.get(f"http://{test_web_address}/spaces/1")
 
-    assert response.status_code == 200
+    assert response.status == 200
 
 """
 space.html shows the correct space listing
@@ -20,14 +19,47 @@ def test_space_page_has_correct_listing_details(page: Page, db_connection, test_
 
     page.goto(f"http://{test_web_address}/spaces/2")
 
-    assert page.locator('.space_details h2').all_text_contents() == ["Venus"]
-    assert page.locator('.space_details h3').all_text_contents()  == ["For the fly trap lovers"]
+    expect(page.locator('.space_details h2')).to_have_text("Venus")
+    expect(page.locator('.space_details h3')).to_have_text("For the fly trap lovers")
 
 """
 date selector displays error when already booked date is selected
 """
+def test_date_selector_displays_error_for_booked_dates(page: Page, db_connection, test_web_address):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+
+    page.goto(f"http://{test_web_address}/spaces/2")
+    page.get_by_label('Select date:').fill('2027-01-02')
+
+    expect(page.locator("#date_error")).to_be_visible()
+    expect(page.locator('#date_error')).to_have_text('Sorry, this date is already booked. Please select another date.')
+    expect(page.get_by_label('Select date:')).to_have_value('')
 
 """
 booking form correctly submits booking to db
 """
+def test_date_selector_correctly_submits_booking(page: Page, db_connection, test_web_address):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    db_connection.seed("seeds/users.sql")
+
+    # first log in
+    page.goto(f"http://{test_web_address}/login/new")
+    page.get_by_placeholder("Email").fill("alice@example.com")
+    page.get_by_placeholder("Password").fill("password1")
+    page.get_by_role("button", name="Log-in").click()
+
+    # navigate to space page and complete form
+    page.goto(f"http://{test_web_address}/spaces/2")
+    page.get_by_label('Select date:').fill('2027-01-01')
+    expect(page.get_by_label('Select date:')).to_have_value('2027-01-01')
+    page.get_by_role('button', name='Request booking').click()
+
+    result = db_connection.execute("SELECT * FROM bookings WHERE date = '2027-01-01' and space_id = 2 and booked_by = 1 and status = 'requested'")
+    assert len(result) == 1
+    assert result[0]['booked_by'] == 1
+    assert result[0]['space_id'] == 2
+    assert result[0]['status'] == 'requested'
+
 
