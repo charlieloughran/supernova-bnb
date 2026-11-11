@@ -104,3 +104,22 @@ nav > ul > li > *{
 .space_card_header > p{
     color: #666375;
 }
+/* .space-left-container{
+
+}
+.space-right-container{
+
+} */
+.space-parent{
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+.space-parent > section{
+    width: 50%;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 10px 5vw;
+}

@@ -1,70 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reserve your space</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
     {% include 'components/nav.html' %}
-    <section class="space_details">
-        <img src={{ space.image_url }}>
-        <h2>{{ space.name }}</h2>
-        <h3>{{ space.description }}</h3>
+    <section class="space-parent">
+        <section class="space_details space-left-container">
+            <!-- <img src={{ space.image_url }}> -->
+            <img src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+            <h2>{{ space.name }}</h2>
+            <h3>{{ space.description }}</h3>
+        </section>
+
+        <section class="booking_form space-right-container">
+            <h2>Reserve your space</h2>
+            <h1>£{{ space.price_per_night }}</h1>
+            <form method="POST" action="/spaces/{{ space.id }}">
+                <label for="booking_date">Select date:</label>
+                <input type="date" id="booking_date" name="booking_date"
+                    min="{{ space.availability_start_date.strftime('%Y-%m-%d') }}"
+                    max="{{ space.availability_end_date.strftime('%Y-%m-%d') }}" required>
+                <p id="date_error" style="color: #d9534f; display: none;">
+                    Sorry, this date is already booked. Please select another date.
+                </p>
+                <input type="submit" value="Request booking">
+            </form>
+        </section>
     </section>
+    <script>
 
-    <section class="booking_form">
-        <h2>Reserve your space</h2>
-        <h1>£{{ space.price_per_night }}</h1>
-        <form method="POST" action="/spaces/{{ space.id }}">
-            <label for="booking_date">Select date:</label>
-            <input 
-                type="date" 
-                id="booking_date" 
-                name="booking_date"
-                min="{{ space.availability_start_date.strftime('%Y-%m-%d') }}"
-                max="{{ space.availability_end_date.strftime('%Y-%m-%d') }}"
-                required
-            >
-            <p id="date_error" style="color: #d9534f; display: none;">
-                Sorry, this date is already booked. Please select another date.
-            </p>
-            <input type="submit" value="Request booking">
-        </form>
-        <script>
+        const bookedDates = {{ booked_dates | tojson }};
 
-            const bookedDates = {{ booked_dates | tojson }};
+        const datePicker = document.getElementById("booking_date");
+        const dateError = document.getElementById("date_error");
 
-            const datePicker = document.getElementById("booking_date");
-            const dateError = document.getElementById("date_error");
+        datePicker.addEventListener("input", function () {
 
-            datePicker.addEventListener("input", function() {
+            if (bookedDates.includes(this.value)) {
 
-                if (bookedDates.includes(this.value)) {
+                dateError.style.display = "block";
+                this.value = "";
 
-                    dateError.style.display = "block";
-                    this.value = "";
+            } else {
 
-                } else {
+                dateError.style.display = "none";
 
-                    dateError.style.display = "none";
+            }
 
-                }
+        });
 
-            });
-
-        </script>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+    </script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
     </section>
 </body>
+
 </html>
