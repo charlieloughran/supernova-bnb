@@ -5,11 +5,10 @@ from playwright.sync_api import Page, expect
 """
 get_space_details returns status 200
 """
-def test_get_space_details_returns_correctly():
-    client = app.test_client()
-    response = client.get("/spaces/1")
+def test_get_space_details_returns_correctly(page: Page, test_web_address):
+    response = page.request.get(f"http://{test_web_address}/spaces/1")
 
-    assert response.status_code == 200
+    assert response.status == 200
 
 """
 space.html shows the correct space listing
