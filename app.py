@@ -21,7 +21,7 @@ def login_required(f):
     @wraps(f)
     def decorated_func(*args, **kwargs):
         if 'user_id' not in session:
-            return redirect('login/new')
+            return redirect('/login/new')
         return f(*args, **kwargs)
     return decorated_func
 
@@ -121,19 +121,18 @@ def get_my_spaces():
     return render_template('my-spaces.html', spaces=all_spaces)
 
 @app.route('/bookings', methods=['GET'])
+@login_required
 def get_bookings():
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)
     
-    #Gets Username/User ID from session
-    # user_bookings = booking_repo.find_by_user_id(session["user_id"])
-    
-    user_bookings = booking_repo.find_by_user_id(2) 
+    user_bookings = booking_repo.find_by_user_id(session["user_id"])
     
     #Lists all bookings relating to the authenticated user
     return render_template('bookings.html', bookings=user_bookings)
 
 @app.route('/bookings/<int:id>')
+@login_required
 def get_booking(id):
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)
