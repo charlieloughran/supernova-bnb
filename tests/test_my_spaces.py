@@ -6,10 +6,12 @@ from lib.space_repository import SpaceRepository
 Render a list of all spaces
 """
 
-def test_my_spaces_list_shown(page: Page, test_web_address):
+def test_my_spaces_list_shown(page: Page, test_web_address, login):
     db_connection = DatabaseConnection(test_mode=True)
     db_connection.connect()
     db_connection.seed('seeds/spaces.sql')
+
+    login("bob@example.com", "password2")
 
     repository = SpaceRepository(db_connection) 
     user_spaces = repository.find_by_owner_id(2)
@@ -41,14 +43,14 @@ Render a form to fill in space details
 Fill a form for space details and save to DB
 """
 
-def test_add_space_to_list(page: Page, test_web_address):
+def test_add_space_to_list(page: Page, test_web_address, login):
     db_connection = DatabaseConnection(test_mode=True)
     db_connection.connect()
     db_connection.seed('seeds/spaces.sql')
 
     repository = SpaceRepository(db_connection)
     
-    
+    login("bob@example.com", "password2")
 
     page.goto(f"http://{test_web_address}/my_spaces/add")
 
