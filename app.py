@@ -125,13 +125,14 @@ def request_booking(space_id):
     return redirect(f'/spaces/{space_id}')
 
 @app.route('/my_spaces', methods=['GET'])
+@login_required
 def get_my_spaces():
     print("ROUTE HIT")
     db_connection = get_flask_database_connection(app)
     space_repo = SpaceRepository(db_connection)
 
     #Gets Username/User ID from session
-    all_spaces = space_repo.find_by_owner_id(2) #Passes Username/ User ID as parameter
+    all_spaces = space_repo.find_by_owner_id(session["user_id"]) #Passes Username/ User ID as parameter
 
     # Lists all user spaces on my-spaces template
     return render_template('my-spaces.html', spaces=all_spaces)
@@ -162,10 +163,12 @@ def get_booking(id):
     return render_template('booking.html', booking=booking)
     
 @app.route('/my_spaces/add', methods=['GET'])
+@login_required
 def show_add_a_space_form():
     return render_template('add-space.html')
 
 @app.route('/my_spaces/new', methods=['POST'])
+@login_required
 def add_a_space():
     db_connection = get_flask_database_connection(app)
     space_repo = SpaceRepository(db_connection)
@@ -177,6 +180,18 @@ def add_a_space():
     space_repo.create(space)
 
     return redirect('/my_spaces')
+
+
+@app.route('/my_spaces/requests', methods=['GET'])
+@login_required
+def see_list_of_requests():
+    db_connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(db_connection)
+
+    user_bookings = booking_repo.find_by_user_and_status(session["user_id"], "requested")
+
+    return render_template('requests.html' , bookings=user_bookings)
+
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

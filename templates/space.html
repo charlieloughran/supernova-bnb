@@ -10,7 +10,7 @@
 <body>
     {% include 'components/nav.html' %}
     <section class="space_details">
-        <img src={{ space.image_url }}>
+        <img src="/{{ space.image_url }}" alt="{{ space.name }}">
         <h2>{{ space.name }}</h2>
         <h3>{{ space.description }}</h3>
     </section>
