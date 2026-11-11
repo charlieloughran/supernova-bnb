@@ -28,7 +28,7 @@ def test_booking_detail_shown(
     db_connection.seed("seeds/bookings.sql")
 
     repository = BookingRepository(db_connection)
-    booking = repository.find(1)
+    booking = repository.find_by_booking(1)
 
     page.goto(f"http://{test_web_address}/bookings/1")
 

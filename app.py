@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, abort
 from lib.database_connection import *
 from lib.space_repository import *
 from lib.booking_repository import *
@@ -69,7 +69,7 @@ def get_bookings():
 def get_booking(id):
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)
-    booking = booking_repo.find(id)
+    booking = booking_repo.find_by_booking(id)
     if booking is None:
         abort(404)
     return render_template('booking.html', booking=booking)
