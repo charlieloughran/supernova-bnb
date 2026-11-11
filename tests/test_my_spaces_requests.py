@@ -45,7 +45,7 @@ def test_list_of_all_booking_requests(page: Page, test_web_address):
 
     booking_ids = page.locator('.booking-id').all_inner_texts()
 
-    assert user_booking_ids == booking_ids[0]
+    assert user_booking_ids == booking_ids
 
 
 """
