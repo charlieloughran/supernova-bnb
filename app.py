@@ -1,7 +1,8 @@
 import os
+
 from lib.user import User
 from lib.user_repository import UserRepository
-from flask import Flask, request, render_template, redirect, session, flash
+from flask import Flask, request, render_template, redirect, session, abort, flash
 from lib.database_connection import *
 from lib.space_repository import *
 from lib.space import Space
@@ -20,7 +21,7 @@ def login_required(f):
     @wraps(f)
     def decorated_func(*args, **kwargs):
         if 'user_id' not in session:
-            return redirect('login/new')
+            return redirect('/login/new')
         return f(*args, **kwargs)
     return decorated_func
 
@@ -135,6 +136,27 @@ def get_my_spaces():
     # Lists all user spaces on my-spaces template
     return render_template('my-spaces.html', spaces=all_spaces)
 
+@app.route('/bookings', methods=['GET'])
+@login_required
+def get_bookings():
+    db_connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(db_connection)
+    
+    user_bookings = booking_repo.find_by_user_id(session["user_id"])
+    
+    #Lists all bookings relating to the authenticated user
+    return render_template('bookings.html', bookings=user_bookings)
+
+@app.route('/bookings/<int:id>')
+@login_required
+def get_booking(id):
+    db_connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(db_connection)
+    booking = booking_repo.find_by_booking(id)
+    if booking is None:
+        abort(404)
+    return render_template('booking.html', booking=booking)
+    
 @app.route('/my_spaces/add', methods=['GET'])
 def show_add_a_space_form():
     return render_template('add-space.html')

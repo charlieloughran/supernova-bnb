@@ -16,6 +16,8 @@ class BookingRepository:
     def find_by_booking(self, booking_id):
         rows = self._connection.execute(
             'SELECT * from bookings WHERE id = %s', [booking_id])
+        if not rows:
+            return None
         row = rows[0]
         return Booking(row["space_id"], row["booked_by"], row["date"], row["status"], row["id"])
 
@@ -43,3 +45,16 @@ class BookingRepository:
             'UPDATE bookings SET status = %s WHERE id = %s', [new_status, booking_id]
         )
         return None
+    
+    def find_by_user_id(self, user_id: int) -> list[Booking]:
+        rows = self._connection.execute(
+            '''
+            SELECT * FROM bookings
+            WHERE booked_by = %s
+            ORDER BY id
+            ''', [user_id]
+        )
+        return [
+            Booking(row["space_id"], row["booked_by"], row["date"], row["status"], row["id"])
+            for row in rows
+        ]
