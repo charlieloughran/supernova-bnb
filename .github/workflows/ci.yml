@@ -4,7 +4,9 @@ on: [push, pull_request]
 jobs:
     test:
         runs-on: ubuntu-latest
-
+        env:
+          APP_ENV: test
+      
         services:
             postgres:
                 image: postgres:16
