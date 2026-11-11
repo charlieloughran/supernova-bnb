@@ -18,7 +18,7 @@
     <section class="booking_form">
         <h2>Reserve your space</h2>
         <h1>£{{ space.price_per_night }}</h1>
-        <form method="POST" action="/spaces/{{ space.id }}">
+        <form method="POST" action="/spaces/{{ space.id }}" novalidate>
             <label for="booking_date">Select date:</label>
             <input 
                 type="date" 
@@ -33,29 +33,6 @@
             </p>
             <input type="submit" value="Request booking">
         </form>
-        <script>
-
-            const bookedDates = {{ booked_dates | tojson }};
-
-            const datePicker = document.getElementById("booking_date");
-            const dateError = document.getElementById("date_error");
-
-            datePicker.addEventListener("input", function() {
-
-                if (bookedDates.includes(this.value)) {
-
-                    dateError.style.display = "block";
-                    this.value = "";
-
-                } else {
-
-                    dateError.style.display = "none";
-
-                }
-
-            });
-
-        </script>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
