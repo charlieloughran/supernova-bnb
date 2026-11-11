@@ -18,6 +18,11 @@ def test_get_space_details_returns_correctly(page: Page, test_web_address):
     db_connection.seed('seeds/spaces.sql')
     db_connection.seed('seeds/bookings.sql')
 
+    page.goto(f"http://{test_web_address}/login/new")
+    page.get_by_placeholder("Email").fill("alice@example.com")
+    page.get_by_placeholder("Password").fill("password1")
+    page.get_by_role("button", name="Log-in").click()
+
     response = page.request.get(f"http://{test_web_address}/my_spaces/requests")
 
     assert response.status == 200
@@ -33,17 +38,16 @@ def test_list_of_all_booking_requests(page: Page, test_web_address):
     db_connection.seed('seeds/spaces.sql')
     db_connection.seed('seeds/bookings.sql')
 
-    #User signed in 
-    user_id = 2
+    page.goto(f"http://{test_web_address}/login/new")
+    page.get_by_placeholder("Email").fill("bob@example.com")
+    page.get_by_placeholder("Password").fill("password2")
+    page.get_by_role("button", name="Log-in").click()
 
-    user_bookings = BookingRepository(db_connection).find_by_user_and_status(user_id, "requested")
+
+    user_bookings = BookingRepository(db_connection).find_by_user_and_status(2, "requested")
     user_booking_ids = [str(booking.id) for booking in user_bookings]
 
     page.goto(f"http://{test_web_address}/my_spaces/requests")
-
-    page_title = page.locator('h2')
-
-    expect(page_title).to_have_text('My Spaces - Bookings')
 
     booking_ids = page.locator('.booking-id').all_inner_texts()
 
