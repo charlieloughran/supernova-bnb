@@ -28,13 +28,41 @@ date selector displays error when already booked date is selected
 def test_date_selector_displays_error_for_booked_dates(page: Page, db_connection, test_web_address):
     db_connection.seed("seeds/spaces.sql")
     db_connection.seed("seeds/bookings.sql")
+    db_connection.seed("seeds/users.sql")
+
+    # first log in
+    page.goto(f"http://{test_web_address}/login/new")
+    page.get_by_placeholder("Email").fill("alice@example.com")
+    page.get_by_placeholder("Password").fill("password1")
+    page.get_by_role("button", name="Log-in").click()
 
     page.goto(f"http://{test_web_address}/spaces/2")
     page.get_by_label('Select date:').fill('2027-01-02')
+    page.get_by_role('button', name='Request booking').click()
 
-    expect(page.locator("#date_error")).to_be_visible()
-    expect(page.locator('#date_error')).to_have_text('Sorry, this date is already booked. Please select another date.')
-    expect(page.get_by_label('Select date:')).to_have_value('')
+    expect(page.locator(".alert-error")).to_be_visible()
+    expect(page.locator('.alert-error')).to_have_text('Sorry, this date is already booked. Please select another date.')
+
+"""
+date selector displays error when user selects date outside of available range
+"""
+def test_date_selector_displays_error_for_unavailable_dates(page: Page, db_connection, test_web_address):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    db_connection.seed("seeds/users.sql")
+
+    # first log in
+    page.goto(f"http://{test_web_address}/login/new")
+    page.get_by_placeholder("Email").fill("alice@example.com")
+    page.get_by_placeholder("Password").fill("password1")
+    page.get_by_role("button", name="Log-in").click()
+
+    page.goto(f"http://{test_web_address}/spaces/2")
+    page.get_by_label('Select date:').fill('2021-01-02')
+    page.get_by_role('button', name='Request booking').click()
+
+    expect(page.locator(".alert-error")).to_be_visible()
+    expect(page.locator('.alert-error')).to_have_text('Sorry, the space is unavailable on this date. Please select a date available on the calendar')
 
 """
 booking form correctly submits booking to db

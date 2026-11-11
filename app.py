@@ -136,7 +136,7 @@ def request_booking(space_id):
 
     elif booking_date < min_date or booking_date > max_date:
         # raise error if space isn't available to book on date
-        flash(f'Sorry, the space is unavailable on this date. Please select a date available on the calendar', 'error')
+        flash('Sorry, the space is unavailable on this date. Please select a date available on the calendar', 'error')
         return redirect(f'/spaces/{space_id}')
 
     else:
