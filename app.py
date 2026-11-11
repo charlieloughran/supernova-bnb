@@ -179,12 +179,12 @@ def add_a_space():
 
 
 @app.route('/my_spaces/requests', methods=['GET'])
+@login_required
 def see_list_of_requests():
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)
 
-    user_id = 2
-    user_bookings = booking_repo.find_by_user_and_status(user_id, "requested")
+    user_bookings = booking_repo.find_by_user_and_status(session["user_id"], "requested")
 
     return render_template('requests.html' , bookings=user_bookings)
 

@@ -11,7 +11,7 @@
         {% for booking in bookings %}
         <article class="booking-card">
             <h3>Booking Id: <span class="booking-id">{{ booking.id }}</span></h3>
-            <p>Space Id: {{ booking.space_name }}</p>
+            <p>Space Id: {{ booking.space_id }}</p>
             <p>Booked By: {{ booking.booked_by }}</p>
             <p>Date Requested: {{ booking.date }}</p>
             <button>Accept</button>
