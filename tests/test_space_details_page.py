@@ -38,12 +38,6 @@ def test_date_selector_displays_error_for_booked_dates(page: Page, db_connection
     expect(page.get_by_label('Select date:')).to_have_value('')
 
 """
-booking post request returns status 302
-"""
-
-
-
-"""
 booking form correctly submits booking to db
 """
 def test_date_selector_correctly_submits_booking(page: Page, db_connection, test_web_address):
