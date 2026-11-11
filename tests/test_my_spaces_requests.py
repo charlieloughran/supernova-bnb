@@ -13,6 +13,10 @@ Owner can go to a page of their requests
 """
 
 def test_get_space_details_returns_correctly(page: Page, test_web_address):
+    db_connection = DatabaseConnection(test_mode=True)
+    db_connection.connect()
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
 
     response = page.request.get(f"http://{test_web_address}/my_spaces/requests")
 
