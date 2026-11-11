@@ -12,13 +12,11 @@ from app import app
 Owner can go to a page of their requests
 """
 
-def test_requests_page_exists():
-    client = app.test_client()
+def test_get_space_details_returns_correctly(page: Page, test_web_address):
 
-    response = client.get('/my_spaces/requests')
+    response = page.request.get(f"http://{test_web_address}/my_spaces/requests")
 
-    assert response.status_code == 200
-
+    assert response.status == 200
 
 
 """
