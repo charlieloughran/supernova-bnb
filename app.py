@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, abort
 from lib.database_connection import get_flask_database_connection
 from lib.space_repository import SpaceRepository
 from lib.booking_repository import BookingRepository
@@ -48,6 +48,8 @@ def get_booking(id):
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)
     booking = booking_repo.find(id)
+    if booking is None:
+        abort(404)
     return render_template('booking.html', booking=booking)
     
 # These lines start the server if you run this file directly

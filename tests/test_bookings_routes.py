@@ -34,3 +34,12 @@ def test_booking_detail_shown(
 
     expect(page.locator(".booking-date")).to_have_text(str(booking.date))
     expect(page.locator(".booking-status")).to_have_text(booking.status)
+    
+def test_booking_detail_returns_404_when_missing(
+    page: Page, db_connection: DatabaseConnection, test_web_address
+):
+    db_connection.seed("seeds/bookings.sql")
+
+    response = page.goto(f"http://{test_web_address}/bookings/999")
+
+    assert response.status == 404
