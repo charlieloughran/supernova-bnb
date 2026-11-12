@@ -6,32 +6,29 @@
         <link rel="stylesheet" href="/static/style.css" >
     </head>
     <body>
+        {% from 'components/space_card.html' import space_card %}
         {% include "components/nav.html" %}
         <div class="container">
-        <div class="my-spaces-actions">
-            <a href="/my_spaces/requests" class="btn-primary">View Booking Requests</a>
-            <a href="/my_spaces/add" class="btn-secondary">Add a Space</a>
-        </div>
-        <h2>Spaces</h2>
-        {% for space in spaces %}
-        <article class="space_card_container">
-            <div class="image-wrapper">
-                <img src="{{space.image_url}}">
+            <div class="my-spaces-actions">
+                <a href="/my_spaces/requests" class="btn-primary">View Booking Requests</a>
+                <a href="/my_spaces/add" class="btn-secondary">Add a Space</a>
             </div>
-                <figcaption>
-                    <p class="space-name">
-                        {{ space.name }}
-                    </p>
-                    <p class="space-description">
-                        {{ space.description }}
-                    </p>
-                    <p class="price-per-night">
-                        £{{ space.price_per_night }}
-                    </p>
-                </figcaption>
-            
-        </article>
+        <h2>Spaces</h2>
+        <div class="card-list">
+        {% for space in spaces %}
+            {{space_card(space)}}
         {% endfor %}
+            <a href="/my_spaces/add" class="add-card">
+                <article class="space_card_container">
+                    <figcaption>
+                        <p class="add-card-text">
+                            +
+                        </p>
+                    </figcaption>
+                </article>
+            </a>
+
+            </div>
         </div>
     </body>
 </html>
