@@ -11,10 +11,18 @@
     {% include "components/nav.html" %}
     <h2>My bookings</h2>
     {% for booking in bookings %}
-    <article>
+    <article class="booking-card">
+        <h3 class="booking-space-name"> {{spaces_by_id[booking.space_id].name }}</h3>
         <p class="booking-date">{{ booking.date }}</p>
         <p class="booking-status">{{ booking.status }}</p>
+        <p class="booking-price-per-night"> {{ spaces_by_id[booking.space_id].price_per_night }}</p>
+        <a href="/spaces/{{ booking.space_id }}">View space</a>
     </article>
+
+    {% else %}
+    <p class="no-bookings-message">You have no bookings yet.</p>
+    <a href="/">Browse spaces</a>
+
     {% endfor %}
 </body>
 </html>
