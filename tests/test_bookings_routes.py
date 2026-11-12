@@ -9,6 +9,7 @@ USER_ID = 2
 
 def test_bookings_list_shown(page: Page, db_connection: DatabaseConnection, test_web_address, login):
     db_connection.seed('seeds/users.sql')
+    db_connection.seed('seeds/spaces.sql')
     db_connection.seed('seeds/bookings.sql')
     
     login("bob@example.com", "password2")
@@ -27,7 +28,8 @@ def test_booking_detail_shown(
     page: Page, db_connection: DatabaseConnection, test_web_address, login
 ):
     db_connection.seed('seeds/users.sql')
-    db_connection.seed("seeds/bookings.sql")
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
     
     login("bob@example.com", "password2")
 
@@ -43,7 +45,8 @@ def test_booking_detail_returns_404_when_missing(
     page: Page, db_connection: DatabaseConnection, test_web_address, login
 ):
     db_connection.seed('seeds/users.sql')
-    db_connection.seed("seeds/bookings.sql")
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
         
     login("bob@example.com", "password2")
 
@@ -63,8 +66,8 @@ def test_booking_detail_redirects_to_login_when_logged_out(page: Page, test_web_
     
 def test_bookings_cards_display_card_details(page: Page, login, db_connection: DatabaseConnection, test_web_address):
     db_connection.seed('seeds/users.sql')
-    db_connection.seed('seeds/bookings.sql')
     db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
     
     login('bob@example.com', 'password2')
     
