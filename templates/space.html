@@ -18,15 +18,21 @@
         </section>
 
         <section class="booking_form" id="space-right-container">
-            <h2>Reserve your space</h2>
-            <h1>£{{ space.price_per_night }}</h1>
-            <form method="POST" action="/spaces/{{ space.id }}" class="space-form" novalidate>
-                <label for="booking_date">Select date:</label>
-                <input type="date" id="booking_date" name="booking_date"
-                    min="{{ today.strftime('%Y-%m-%d') if today.strftime('%Y-%m-%d') > space.availability_start_date.strftime('%Y-%m-%d') else space.availability_start_date.strftime('%Y-%m-%d') }}"
-                    max="{{ space.availability_end_date.strftime('%Y-%m-%d') }}" required>
-                <input type="submit" value="Request booking">
-            </form>
+            {% if is_owner %}
+                <h2>Your space</h2>
+                <h1>£{{ space.price_per_night }}</h1>
+                <p class="owner-note">This is your space, so you cannot book it</p>
+            {% else %}
+                <h2>Reserve your space</h2>
+                <h1>£{{ space.price_per_night }}</h1>
+                <form method="POST" action="/spaces/{{ space.id }}" class="space-form" novalidate>
+                    <label for="booking_date">Select date:</label>
+                    <input type="date" id="booking_date" name="booking_date"
+                        min="{{ today.strftime('%Y-%m-%d') if today.strftime('%Y-%m-%d') > space.availability_start_date.strftime('%Y-%m-%d') else space.availability_start_date.strftime('%Y-%m-%d') }}"
+                        max="{{ space.availability_end_date.strftime('%Y-%m-%d') }}" required>
+                    <input type="submit" value="Request booking">
+                </form>
+            {% endif %}
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
                             {% for category, message in messages %}

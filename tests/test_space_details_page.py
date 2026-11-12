@@ -132,4 +132,28 @@ def test_date_selector_correctly_submits_booking(page: Page, db_connection, test
     assert result[0]['space_id'] == 2
     assert result[0]['status'] == 'requested'
 
+def test_owner_sees_note_instead_of_booking_form_on_their_own_space(page: Page, db_connection: DatabaseConnection, login, test_web_address):
+    db_connection.seed('seeds/users.sql')
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
+    
+    login("bob@example.com", "password2")
+    
+    page.goto(f"http://{test_web_address}/spaces/2")
+    
+    expect(page.get_by_role("button", name="Request Booking")).to_have_count(0)
+    expect(page.locator(".owner-note")).to_have_text("This is your space, so you cannot book it")
 
+def test_owner_cant_book_own_space_by_posting_directly(page: Page, db_connection:DatabaseConnection, login, test_web_address):
+    # block spaces/2 from submitting a post request for Bob
+    db_connection.seed('seeds/users.sql')
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
+    
+    login("bob@example.com", "password2")
+    
+    page.request.post(f"http://{test_web_address}/spaces/2", form={"booking_date": "2027-03-15"})
+    
+    result = db_connection.execute("SELECT * FROM bookings WHERE date = '2027-03-15' AND space_id = 2")  #
+
+    assert len(result) == 0
