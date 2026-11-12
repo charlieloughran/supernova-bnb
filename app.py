@@ -10,6 +10,7 @@ from lib.booking_repository import *
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+from datetime import date
 
 
 # Create a new Flask app
@@ -104,7 +105,7 @@ def get_space_details(space_id):
     bookings = booking_repository.find_by_space_and_status(space_id, 'accepted')
     booked_dates = [booking.date.strftime('%Y-%m-%d') for booking in bookings]
 
-    return render_template('space.html', space=space, booked_dates=booked_dates)
+    return render_template('space.html', space=space, booked_dates=booked_dates, today=date.today())
 
 @app.route('/spaces/<int:space_id>', methods=['POST'])
 @login_required
@@ -126,7 +127,7 @@ def request_booking(space_id):
 
     # find space availability dates
     space_details = space_repository.find(space_id)
-    min_date = space_details.availability_start_date
+    min_date = max(date.today(), space_details.availability_start_date)
     max_date = space_details.availability_end_date
 
     if accepted_bookings_same_date != []:
@@ -134,7 +135,12 @@ def request_booking(space_id):
         flash('Sorry, this date is already booked. Please select another date.', 'error')
         return redirect(f'/spaces/{space_id}')
 
-    elif booking_date < min_date or booking_date > max_date:
+    elif booking_date < min_date:
+        # raise error if booking date is in the past
+        flash('The date selected is in the past. Please select a date available on the calendar.', 'error')
+        return redirect(f'/spaces/{space_id}')
+
+    elif booking_date > max_date:
         # raise error if space isn't available to book on date
         flash('Sorry, the space is unavailable on this date. Please select a date available on the calendar', 'error')
         return redirect(f'/spaces/{space_id}')
@@ -219,6 +225,25 @@ def see_list_of_requests():
 
     return render_template('requests.html' , bookings=user_bookings)
 
+
+@app.route('/my_spaces/requests/<int:id>/accept', methods=['POST'])
+@login_required
+def accept_requests(id):
+    db_connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(db_connection)
+    booking_repo.update(id, "accepted")
+
+    return redirect('/my_spaces/requests')
+
+
+@app.route('/my_spaces/requests/<int:id>/deny', methods=['POST'])
+@login_required
+def deny_requests(id):
+    db_connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(db_connection)
+    booking_repo.update(id, "declined")
+
+    return redirect('/my_spaces/requests')
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
