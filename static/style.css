@@ -443,3 +443,11 @@ nav > ul > li >a:hover{
     border-radius: 20px;
     padding: 20px 10px;
 }
+
+.bookings-page {
+    margin: 0 80px;
+}
+
+.booking-grid .space_card_container {
+    margin: 0;
+}
