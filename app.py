@@ -26,6 +26,15 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_func
 
+def update_expired_bookings(f):
+    @wraps(f)
+    def decorated_func(*args, **kwargs):
+        db_connection = get_flask_database_connection(app)
+        booking_repository = BookingRepository(db_connection)
+        booking_repository.update_expired_bookings()
+        return f(*args, **kwargs)
+    return decorated_func
+
 # GET /index
 # Returns the homepage
 # Try it:
@@ -93,6 +102,7 @@ def create_session():
 
 # GET route gets details of the space for the space details page
 @app.route('/spaces/<int:space_id>', methods=['GET'])
+@update_expired_bookings
 def get_space_details(space_id):
     db_connection = get_flask_database_connection(app)
 
@@ -167,23 +177,28 @@ def get_my_spaces():
     # Lists all user spaces on my-spaces template
     return render_template('my-spaces.html', spaces=all_spaces)
 
-@app.route('/bookings', methods=['GET'])
+@app.route("/bookings", methods=["GET"])
 @login_required
+@update_expired_bookings
 def get_bookings():
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)
     space_repo = SpaceRepository(db_connection)
-    
-    user_bookings = booking_repo.find_by_user_id(session["user_id"])
+
     spaces = space_repo.all()
-    
     spaces_by_id = {space.id: space for space in spaces}
-    
-    #Lists all bookings relating to the authenticated user
-    return render_template('bookings.html', bookings=user_bookings, spaces_by_id=spaces_by_id)
+
+    user_bookings = booking_repo.find_by_user_id(session["user_id"])
+
+    bookings_by_status = {"requested": [], "accepted": [], "declined": []}
+    for booking in user_bookings:
+        bookings_by_status[booking.status].append(booking)
+
+    return render_template("bookings.html", bookings=user_bookings, spaces_by_id=spaces_by_id,bookings_by_status=bookings_by_status)
 
 @app.route('/bookings/<int:id>')
 @login_required
+@update_expired_bookings
 def get_booking(id):
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)
@@ -205,7 +220,7 @@ def add_a_space():
     space_details = request.form
 
 
-    space = Space(space_details["space-name"], space_details["space-description"], datetime.strptime(space_details['availability-start-date'], '%Y-%m-%d').date(), datetime.strptime(space_details['availability-end-date'], '%Y-%m-%d').date(), space_details["price-per-night"], space_details["image-url"], 2, None)
+    space = Space(space_details["space-name"], space_details["space-description"], datetime.strptime(space_details['availability-start-date'], '%Y-%m-%d').date(), datetime.strptime(space_details['availability-end-date'], '%Y-%m-%d').date(), space_details["price-per-night"], space_details["image-url"], session['user_id'], None)
 
     space_repo.create(space)
 
@@ -214,6 +229,7 @@ def add_a_space():
 
 @app.route('/my_spaces/requests', methods=['GET'])
 @login_required
+@update_expired_bookings
 def see_list_of_requests():
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)

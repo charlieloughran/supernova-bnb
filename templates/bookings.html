@@ -8,21 +8,26 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+    {% from 'components/booking_card.html' import booking_card %}
     {% include "components/nav.html" %}
     <h2>My bookings</h2>
-    {% for booking in bookings %}
-    <article class="booking-card">
-        <h3 class="booking-space-name"> {{spaces_by_id[booking.space_id].name }}</h3>
-        <p class="booking-date">{{ booking.date }}</p>
-        <p class="booking-status">{{ booking.status }}</p>
-        <p class="booking-price-per-night"> {{ spaces_by_id[booking.space_id].price_per_night }}</p>
-        <a href="/spaces/{{ booking.space_id }}">View space</a>
-    </article>
 
+    {% if bookings %}
+        {% for status, group in bookings_by_status.items() %}
+            {% if group %}
+                <section class="booking-status-grouping">
+                    <h2 class="booking-status-grouping-title">{{ status|capitalize }}</h2>
+                    <div class="booking-grid">
+                        {% for booking in group %}
+                            {{ booking_card(booking, spaces_by_id[booking.space_id]) }}
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endif %}
+        {% endfor %}
     {% else %}
-    <p class="no-bookings-message">You have no bookings yet.</p>
-    <a href="/">Browse spaces</a>
-
-    {% endfor %}
+        <p class="no-bookings-message">You have no bookings yet.</p>
+        <a href="/">Browse spaces</a>
+    {% endif %}
 </body>
 </html>
