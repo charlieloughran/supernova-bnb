@@ -127,6 +127,14 @@ def request_booking(space_id):
     db_connection = get_flask_database_connection(app)
     booking_repository = BookingRepository(db_connection)
     space_repository = SpaceRepository(db_connection)
+    
+    # find space availability dates
+    space_details = space_repository.find(space_id)
+    
+    if user_owns_space(space_details):
+        # raise error if the user owns the space
+        flash("You cannot book your own space.", 'error')
+        return redirect(f'/spaces/{space_id}')
 
     # get date from form and user_id from session data
     if request.form['booking_date'] == '':
@@ -144,8 +152,6 @@ def request_booking(space_id):
 
     accepted_bookings_same_date = [booking for booking in accepted_bookings if booking.date == booking_date]
 
-    # find space availability dates
-    space_details = space_repository.find(space_id)
     min_date = max(date.today(), space_details.availability_start_date)
     max_date = space_details.availability_end_date
     
