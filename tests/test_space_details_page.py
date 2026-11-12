@@ -86,6 +86,27 @@ def test_date_selector_displays_error_for_past_dates(page: Page, db_connection, 
     expect(page.locator('.alert-error')).to_have_text('The date selected is in the past. Please select a date available on the calendar.')
 
 """
+date selector displays error when user submits without inputting a date
+"""
+def test_date_selector_displays_error_when_no_date(page: Page, db_connection, test_web_address):
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+    db_connection.seed("seeds/users.sql")
+
+    # first log in
+    page.goto(f"http://{test_web_address}/login/new")
+    page.get_by_placeholder("Email").fill("alice@example.com")
+    page.get_by_placeholder("Password").fill("password1")
+    page.get_by_role("button", name="Log-in").click()
+
+    page.goto(f"http://{test_web_address}/spaces/2")
+    page.get_by_role('button', name='Request booking').click()
+
+    expect(page.locator(".alert-error")).to_be_visible()
+    expect(page.locator('.alert-error')).to_have_text('Please select a date.')
+
+
+"""
 booking form correctly submits booking to db
 """
 def test_date_selector_correctly_submits_booking(page: Page, db_connection, test_web_address):
