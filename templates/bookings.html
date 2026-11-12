@@ -10,24 +10,26 @@
 <body>
     {% from 'components/booking_card.html' import booking_card %}
     {% include "components/nav.html" %}
-    <h2>My bookings</h2>
 
-    {% if bookings %}
-        {% for status, group in bookings_by_status.items() %}
-            {% if group %}
-                <section class="booking-status-grouping">
-                    <h2 class="booking-status-grouping-title">{{ status|capitalize }}</h2>
-                    <div class="booking-grid">
-                        {% for booking in group %}
-                            {{ booking_card(booking, spaces_by_id[booking.space_id]) }}
-                        {% endfor %}
-                    </div>
-                </section>
-            {% endif %}
-        {% endfor %}
-    {% else %}
-        <p class="no-bookings-message">You have no bookings yet.</p>
-        <a href="/">Browse spaces</a>
-    {% endif %}
+    <main class="bookings-page">
+        <h2>My bookings</h2>
+        {% if bookings %}
+            {% for status, group in bookings_by_status.items() %}
+                {% if group %}
+                    <section class="booking-status-grouping">
+                        <h2 class="booking-status-grouping-title">{{ status|capitalize }}</h2>
+                        <div class="booking-grid">
+                            {% for booking in group %}
+                                {{ booking_card(booking, spaces_by_id[booking.space_id]) }}
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p class="no-bookings-message">You have no bookings yet.</p>
+            <a href="/">Browse spaces</a>
+        {% endif %}
+    </main>
 </body>
 </html>
