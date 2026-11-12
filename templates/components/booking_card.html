@@ -1,0 +1,14 @@
+{% macro booking_card(booking, space) %}
+<article class="space_card_container booking-card">
+    <img src="/{{ space.image_url }}" alt="Image of {{ space.name }}">
+    <div class="space_card_header">
+        <h3 class="booking-space-name">{{ space.name }}</h3>
+        <p class="booking-price-per-night">£{{ space.price_per_night }}</p>
+    </div>
+    <p class="booking-date">{{ booking.date }}</p>
+    <div class="booking_card_footer">
+        <span class="pill pill-{{ booking.status }} booking-status">{{ booking.status }}</span>
+        <a class="btn-secondary" href="/spaces/{{ booking.space_id }}">View space</a>
+    </div>
+</article>
+{% endmacro %}
