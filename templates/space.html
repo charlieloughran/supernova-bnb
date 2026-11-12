@@ -12,7 +12,7 @@
     {% include 'components/nav.html' %}
     <section class="space-parent">
         <section class="space_details" id="space-left-container">
-            <img src="{{ space.image_url }}">
+            <img src="/{{ space.image_url }}">
             <h2>{{ space.name }}</h2>
             <h3>{{ space.description }}</h3>
         </section>
@@ -23,7 +23,7 @@
             <form method="POST" action="/spaces/{{ space.id }}" class="space-form" novalidate>
                 <label for="booking_date">Select date:</label>
                 <input type="date" id="booking_date" name="booking_date"
-                    min="{{ space.availability_start_date.strftime('%Y-%m-%d') }}"
+                    min="{{ today.strftime('%Y-%m-%d') }}"
                     max="{{ space.availability_end_date.strftime('%Y-%m-%d') }}" required>
                 <p id="date_error" style="color: #d9534f; display: none;">
                     Sorry, this date is already booked. Please select another date.
