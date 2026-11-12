@@ -19,7 +19,7 @@ def test_get_all_records(db_connection):
         Space('Mars', 'For the wanna-be earth leavers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/mars-space.png', 4, 4),
         Space('Jupiter', 'For the grand regent lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/jupiter-space.png', 5, 5),
         Space('Saturn', 'For the ring lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/saturn-space.png', 2, 6),
-        Space('Uranus', 'For the lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/uranus-space.png', 3, 7)
+        Space('Uranus', 'For the lovers', date(2026, 12, 25), date(2027, 4, 25), 220.13, 'static/uranus-space.png', 3, 7)
     ]
 
 """
@@ -54,7 +54,7 @@ def test_create_record(db_connection):
         Space('Mars', 'For the wanna-be earth leavers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/mars-space.png', 4, 4),
         Space('Jupiter', 'For the grand regent lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/jupiter-space.png', 5, 5),
         Space('Saturn', 'For the ring lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/saturn-space.png', 2, 6),
-        Space('Uranus', 'For the lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/uranus-space.png', 3, 7),
+        Space('Uranus', 'For the lovers', date(2026, 12, 25), date(2027, 4, 25), 220.13, 'static/uranus-space.png', 3, 7),
         Space('Neptune', 'For the water lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/neptune-space.png', 3, 8)
 
     ]
@@ -75,7 +75,7 @@ def test_delete_record(db_connection):
         Space('Mars', 'For the wanna-be earth leavers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/mars-space.png', 4, 4),
         Space('Jupiter', 'For the grand regent lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/jupiter-space.png', 5, 5),
         Space('Saturn', 'For the ring lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/saturn-space.png', 2, 6),
-        Space('Uranus', 'For the lovers', date(2026, 4, 25), date(2027, 4, 25), 220.13, 'static/uranus-space.png', 3, 7),
+        Space('Uranus', 'For the lovers', date(2026, 12, 25), date(2027, 4, 25), 220.13, 'static/uranus-space.png', 3, 7),
 
     ]
 

@@ -45,7 +45,6 @@ nav > ul > li > *{
     place-items: center;
     color: var(--primary-color);
     border: 1px solid var(--primary-color);
-    text-decoration: none;
 }
 .btn-primary > *{
     color: var(--primary-color);
@@ -62,11 +61,12 @@ nav > ul > li > *{
     text-decoration: none;
     cursor: pointer;
     border: none;
+
 }
 .btn-secondary > *{
     color: white;
 }
-.space_card_section{
+.space_card_section {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -191,13 +191,86 @@ nav > ul > li > *{
 .login_form button{
     width: 100%;
 }
-.my_spaces-links{
-    width: 100%;
+
+.container {
     display: flex;
-    justify-content: flex-end;
-    gap: 30px;
+    flex-wrap: nowrap;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-direction: column;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 0 64px 0 64px;
 }
-.space-name{
-    font-size: var(--p-text);
-    font-weight: bold;
+
+.my-spaces-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: flex-end;
+
+}
+
+.my-spaces-actions a{
+    text-decoration: none;
+    text-align: center;
+    width: 25%;
+    margin: 10px;
+}
+
+.back-link {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: flex-start;
+
+}
+
+.image-wrapper > img{
+    width: 100%;
+    height: 220px;
+    border-radius: 20px;
+}
+
+
+
+.add_space_form{
+    display: flex;
+    max-width: 1200px;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 20px 30px;
+    border: 1px solid grey;
+    border-radius: 30px;
+}
+.add_space_form *{
+    margin: 10px 0 0px 0;
+}
+.add_space_form input, textarea{
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.add_space_form button{
+    width: 100%;
+    font-size: 16px;
+    height: 54px;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    color: rgb(234, 234, 234);
+    border: none;
+}
+
+.add_space_form button:hover{
+    width: 100%;
+    height: 54px;
+    border-radius: 20px;
+    background-color: #493ebb;
+    display: grid;
+    place-items: center;
+    color: var(--secondary-color);
+    border: none;
+    cursor: pointer;
 }

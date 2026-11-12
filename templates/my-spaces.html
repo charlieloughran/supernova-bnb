@@ -1,20 +1,16 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>SupernovaBnB - Spaces</title>
-
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-
-<body>
-    {% include "components/nav.html" %}
-    <h2>Spaces</h2>
-    <section class="my_spaces-links">
-        <a href="/my_spaces/add" class="btn-primary">Add a Space</a>
-        <a href="/my_spaces/requests" class="btn-secondary">View Requests</a>
-    </section>
-    <section class="space_card_section">
+        <link rel="stylesheet" href="/static/style.css" >
+    </head>
+    <body>
+        {% include "components/nav.html" %}
+        <div class="container">
+        <div class="my-spaces-actions">
+            <a href="/my_spaces/requests" class="btn-primary">View Booking Requests</a>
+            <a href="/my_spaces/add" class="btn-secondary">Add a Space</a>
+        </div>
+        <h2>Spaces</h2>
         {% for space in spaces %}
         <article class="space_card_container">
             <div class="image-wrapper">
@@ -34,7 +30,6 @@
 
         </article>
         {% endfor %}
-    </section>
-</body>
-
+        </div>
+    </body>
 </html>
