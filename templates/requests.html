@@ -14,8 +14,15 @@
             <p>Space Id: {{ booking.space_id }}</p>
             <p>Booked By: {{ booking.booked_by }}</p>
             <p>Date Requested: {{ booking.date }}</p>
-            <button>Accept</button>
-            <button>Deny</button>
+        <div class="booking-actions">
+            <form action="/my_spaces/requests/{{ booking.id }}/accept" method="POST">
+                <button type="submit" class="btn btn-accept">Accept</button>
+            </form>
+
+            <form action="/my_spaces/requests/{{ booking.id }}/deny" method="POST">
+                <button type="submit" class="btn btn-deny">Deny</button>
+            </form>
+        </div>
         </article>
         {% else %}
         <p>You have no booking requests right now</p>
