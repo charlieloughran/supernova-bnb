@@ -36,6 +36,9 @@ def update_expired_bookings(f):
         return f(*args, **kwargs)
     return decorated_func
 
+def user_owns_space(space: Space):
+    return space.owner_id == session.get("user_id")
+
 # GET /index
 # Returns the homepage
 # Try it:
@@ -116,7 +119,7 @@ def get_space_details(space_id):
     bookings = booking_repository.find_by_space_and_status(space_id, 'accepted')
     booked_dates = [booking.date.strftime('%Y-%m-%d') for booking in bookings]
 
-    return render_template('space.html', space=space, booked_dates=booked_dates, today=date.today())
+    return render_template('space.html', space=space, booked_dates=booked_dates, today=date.today(), is_owner=user_owns_space(space))
 
 @app.route('/spaces/<int:space_id>', methods=['POST'])
 @login_required
