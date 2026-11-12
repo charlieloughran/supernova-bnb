@@ -1,31 +1,40 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>SupernovaBnB - Spaces</title>
 
-        <link rel="stylesheet" href="/static/style.css" >
-    </head>
-    <body>
-        {% include "components/nav.html" %}
-        <h2>Spaces</h2>
+<head>
+    <title>SupernovaBnB - Spaces</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    {% include "components/nav.html" %}
+    <h2>Spaces</h2>
+    <section class="my_spaces-links">
+        <a href="/my_spaces/add" class="btn-primary">Add a Space</a>
+        <a href="/my_spaces/requests" class="btn-secondary">View Requests</a>
+    </section>
+    <section class="space_card_section">
         {% for space in spaces %}
-        <article>
+        <article class="space_card_container">
             <div class="image-wrapper">
                 <img src="{{space.image_url}}">
             </div>
-                <figcaption>
-                    <p class="space-name">
-                        {{ space.name }}
-                    </p>
-                    <p class="space-description">
-                        {{ space.description }}
-                    </p>
-                    <p class="price-per-night">
-                        £{{ space.price_per_night }}
-                    </p>
-                </figcaption>
-            
+            <figcaption>
+                <p class="space-name">
+                    {{ space.name }}
+                </p>
+                <p class="space-description">
+                    {{ space.description }}
+                </p>
+                <p class="price-per-night">
+                    £{{ space.price_per_night }}
+                </p>
+            </figcaption>
+
         </article>
         {% endfor %}
-    </body>
+    </section>
+</body>
+
 </html>
