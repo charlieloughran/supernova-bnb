@@ -125,6 +125,11 @@ def request_booking(space_id):
     space_repository = SpaceRepository(db_connection)
 
     # get date from form and user_id from session data
+    if request.form['booking_date'] == '':
+        # raise error if no date inputted
+        flash('Please select a date.', 'error')
+        return redirect(f'/spaces/{space_id}')
+            
     booking_date = datetime.strptime(
         request.form['booking_date'], '%Y-%m-%d'
         ).date()
@@ -139,7 +144,7 @@ def request_booking(space_id):
     space_details = space_repository.find(space_id)
     min_date = max(date.today(), space_details.availability_start_date)
     max_date = space_details.availability_end_date
-
+    
     if accepted_bookings_same_date != []:
         # raise error if date is already booked
         flash('Sorry, this date is already booked. Please select another date.', 'error')
