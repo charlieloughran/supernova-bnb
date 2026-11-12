@@ -437,3 +437,9 @@ nav > ul > li >a:hover{
 .footer-links a:hover {
     text-decoration: underline;
 }
+
+.owner-note {
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    padding: 20px 10px;
+}
