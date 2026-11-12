@@ -288,3 +288,10 @@ nav > ul > li > *{
     cursor: pointer;
 }
 
+.bookings-page {
+    margin: 0 80px;
+}
+
+.booking-grid .space_card_container {
+    margin: 0;
+}
