@@ -220,7 +220,7 @@ def add_a_space():
     space_details = request.form
 
 
-    space = Space(space_details["space-name"], space_details["space-description"], datetime.strptime(space_details['availability-start-date'], '%Y-%m-%d').date(), datetime.strptime(space_details['availability-end-date'], '%Y-%m-%d').date(), space_details["price-per-night"], space_details["image-url"], 2, None)
+    space = Space(space_details["space-name"], space_details["space-description"], datetime.strptime(space_details['availability-start-date'], '%Y-%m-%d').date(), datetime.strptime(space_details['availability-end-date'], '%Y-%m-%d').date(), space_details["price-per-night"], space_details["image-url"], session['user_id'], None)
 
     space_repo.create(space)
 
