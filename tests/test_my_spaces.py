@@ -22,7 +22,7 @@ def test_my_spaces_list_shown(page: Page, test_web_address, login):
 
     
 
-    spaces = page.locator('.space-name')
+    spaces = page.locator('h3')
 
 
     assert space_names == spaces.all_inner_texts()
@@ -63,7 +63,7 @@ def test_add_space_to_list(page: Page, test_web_address, login):
     page.get_by_role("button", name="Submit").click()
 
 
-    spaces = page.locator('.space-name').all_inner_texts()
+    spaces = page.locator('h3').all_inner_texts()
 
     user_spaces = repository.find_by_owner_id(2)
     space_names = [user_space.name for user_space in user_spaces]
