@@ -26,4 +26,4 @@ VALUES
     ('Mars', 'For the wanna-be earth leavers', '2026-04-25', '2027-04-25', 220.13, 'static/mars-space.png', 4),
     ('Jupiter', 'For the grand regent lovers', '2026-04-25', '2027-04-25', 220.13, 'static/jupiter-space.png', 5),
     ('Saturn', 'For the ring lovers', '2026-04-25', '2027-04-25', 220.13, 'static/saturn-space.png', 2),
-    ('Uranus', 'For the lovers', '2026-04-25', '2027-04-25', 220.13, 'static/uranus-space.png', 3);
+    ('Uranus', 'For the lovers', '2026-12-25', '2027-04-25', 220.13, 'static/uranus-space.png', 3);
