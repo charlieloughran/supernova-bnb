@@ -127,7 +127,7 @@ def request_booking(space_id):
 
     # find space availability dates
     space_details = space_repository.find(space_id)
-    min_date = date.today()
+    min_date = max(date.today(), space_details.availability_start_date)
     max_date = space_details.availability_end_date
 
     if accepted_bookings_same_date != []:

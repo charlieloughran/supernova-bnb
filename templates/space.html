@@ -23,7 +23,7 @@
             <form method="POST" action="/spaces/{{ space.id }}" class="space-form" novalidate>
                 <label for="booking_date">Select date:</label>
                 <input type="date" id="booking_date" name="booking_date"
-                    min="{{ today.strftime('%Y-%m-%d') }}"
+                    min="{{ today.strftime('%Y-%m-%d') if today.strftime('%Y-%m-%d') > space.availability_start_date.strftime('%Y-%m-%d') else space.availability_start_date.strftime('%Y-%m-%d') }}"
                     max="{{ space.availability_end_date.strftime('%Y-%m-%d') }}" required>
                 <p id="date_error" style="color: #d9534f; display: none;">
                     Sorry, this date is already booked. Please select another date.
