@@ -133,4 +133,23 @@ def test_find_by_user_id_returns_their_bookings(db_connection: DatabaseConnectio
         Booking(1, 2, date(2027, 2, 11), 'requested', 4),
         Booking(2, 2, date(2027, 2, 11), 'requested', 5)
     ] 
-    
+
+
+"""
+When we call BookingRepository#update_expired_bookings
+We update the status of all bookings with date in the past to 'expired'
+"""
+def test_update_record(db_connection):
+    db_connection.seed("seeds/expired_bookings.sql")
+    repository = BookingRepository(db_connection)
+    repository.update_expired_bookings()
+
+    result = repository.all()
+    assert result == [
+        Booking(3, 2, date(2025, 3, 1), 'expired', 1),
+        Booking(2, 1, date(2024, 1, 1), 'expired', 2),
+        Booking(2, 4, date(2026, 1, 2), 'expired', 3),
+        Booking(1, 2, date(2027, 2, 11), 'requested', 4),
+        Booking(2, 2, date(2027, 2, 11), 'requested', 5),
+
+    ]

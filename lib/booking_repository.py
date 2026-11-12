@@ -51,7 +51,17 @@ class BookingRepository:
 
     def update(self, booking_id, new_status):
         self._connection.execute(
-            'UPDATE bookings SET status = %s WHERE id = %s', [new_status, booking_id]
+            'UPDATE bookings ' \
+            'SET status = %s ' \
+            'WHERE id = %s ', [new_status, booking_id]
+        )
+        return None
+
+    def update_expired_bookings(self):
+        self._connection.execute(
+            'UPDATE bookings ' \
+            'SET status = %s ' \
+            'WHERE date < CURRENT_DATE and status != %s ', ['expired', 'expired']
         )
         return None
     
