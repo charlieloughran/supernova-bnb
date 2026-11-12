@@ -9,6 +9,7 @@ from lib.space import Space
 from lib.booking_repository import *
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from functools import wraps
 from datetime import date
 
@@ -219,8 +220,22 @@ def add_a_space():
     space_repo = SpaceRepository(db_connection)
     space_details = request.form
 
+    image_file = request.files.get('image-url')
+    image_path = None
 
-    space = Space(space_details["space-name"], space_details["space-description"], datetime.strptime(space_details['availability-start-date'], '%Y-%m-%d').date(), datetime.strptime(space_details['availability-end-date'], '%Y-%m-%d').date(), space_details["price-per-night"], space_details["image-url"], session['user_id'], None)
+    if image_file and image_file.filename != '':
+        filename = secure_filename(image_file.filename)
+
+        upload_folder = os.path.join('static')
+        os.makedirs(upload_folder, exist_ok=True)
+
+        file_path = os.path.join(upload_folder, filename)
+        image_file.save(file_path)
+
+        image_path = f"/static/{filename}"
+
+
+    space = Space(space_details["space-name"], space_details["space-description"], datetime.strptime(space_details['availability-start-date'], '%Y-%m-%d').date(), datetime.strptime(space_details['availability-end-date'], '%Y-%m-%d').date(), space_details["price-per-night"], image_path, session['user_id'], None)
 
     space_repo.create(space)
 
