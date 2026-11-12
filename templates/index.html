@@ -14,11 +14,15 @@
 <body>
     {% from 'components/space_card.html' import space_card %}
     {% include "components/nav.html" %}
-    <h1 style="font-weight: 300; margin-left: 80px;">Welcome Username</h1>
+    {% if session.get('name') %}
+        <h1 style="font-weight: 300; margin-left: 80px;">Welcome {{ session['name'] }}</h1>
+    {% else %}
+        <h1 style="font-weight: 300; margin-left: 80px;">Welcome Guest</h1>
+    {% endif %}
     <section class="space_card_section">
         <h2>Location 1</h2>
         {% for space in spaces %}
-            {{space_card(space)}}
+        {{space_card(space)}}
         {% endfor %}
     </section>
 </body>
