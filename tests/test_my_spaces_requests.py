@@ -55,32 +55,56 @@ def test_list_of_all_booking_requests(page: Page, test_web_address):
 
 
 """
-Owner accepts request (route)
+Owner accepts request
 """
 def test_owner_accepts_request(page, test_web_address):
-    pass
+    db_connection = DatabaseConnection(test_mode=True)
+    db_connection.connect()
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
+
+    page.goto(f"http://{test_web_address}/login/new")
+    page.get_by_placeholder("Email").fill("bob@example.com")
+    page.get_by_placeholder("Password").fill("password2")
+    page.get_by_role("button", name="Log-in").click()
+
+    page.goto(f"http://{test_web_address}/my_spaces/requests")
+
+    booking_ids = page.locator('.booking-id').all_inner_texts()
+
+    page.get_by_role("button", name="Accept").click()
+
+    booking_repo = BookingRepository(db_connection)
+
+
+    assert booking_repo.find_by_booking(5).status == "accepted"
+
+
 
 """
 Owner denies request (route)
 """
 
 def test_owner_denies_request(page, test_web_address):
-    pass
+        db_connection = DatabaseConnection(test_mode=True)
+        db_connection.connect()
+        db_connection.seed('seeds/spaces.sql')
+        db_connection.seed('seeds/bookings.sql')
 
-"""
-Owner accepts request (DB)
-"""
+        page.goto(f"http://{test_web_address}/login/new")
+        page.get_by_placeholder("Email").fill("bob@example.com")
+        page.get_by_placeholder("Password").fill("password2")
+        page.get_by_role("button", name="Log-in").click()
 
-def test_database_result_when_owner_accepts_request(page, test_web_address):
-    pass
+        page.goto(f"http://{test_web_address}/my_spaces/requests")
 
-"""
-Owner denies request (DB)
+        page.get_by_role("button", name="Deny").click()
 
-"""
+        booking_repo = BookingRepository(db_connection)
 
-def test_database_result_when_owner_denies_request(page, test_web_address):
-    pass
+
+        assert booking_repo.find_by_booking(5).status == "declined"
+
 
 """
 Owner receives mutliple requests within same dates
