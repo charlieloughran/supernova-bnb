@@ -134,5 +134,16 @@ def test_bookings_hides_empty_status_sections(page: Page, login, db_connection: 
     expect(page.locator(".booking-status-grouping")).to_have_count(1)
     expect(page.locator(".booking-status-grouping-title")).to_have_text(["Requested"])
     
-    
+def test_bookings_shows_expired_bookings(page: Page, login, db_connection: DatabaseConnection, test_web_address):
+    db_connection.seed("seeds/users.sql")
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/expired_bookings.sql")
+
+    login("bob@example.com", "password2")
+
+    page.goto(f"http://{test_web_address}/bookings")
+
+    expect(page.locator(".booking-status-grouping-title")).to_have_text(["Requested", "Expired"])
+    expired = page.locator(".booking-status-grouping").nth(1)
+    expect(expired.locator(".booking-space-name")).to_have_text(["Earth"])
     

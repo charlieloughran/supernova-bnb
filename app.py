@@ -9,6 +9,7 @@ from lib.space import Space
 from lib.booking_repository import *
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from functools import wraps
 from datetime import date
 
@@ -125,6 +126,11 @@ def request_booking(space_id):
     space_repository = SpaceRepository(db_connection)
 
     # get date from form and user_id from session data
+    if request.form['booking_date'] == '':
+        # raise error if no date inputted
+        flash('Please select a date.', 'error')
+        return redirect(f'/spaces/{space_id}')
+            
     booking_date = datetime.strptime(
         request.form['booking_date'], '%Y-%m-%d'
         ).date()
@@ -139,7 +145,7 @@ def request_booking(space_id):
     space_details = space_repository.find(space_id)
     min_date = max(date.today(), space_details.availability_start_date)
     max_date = space_details.availability_end_date
-
+    
     if accepted_bookings_same_date != []:
         # raise error if date is already booked
         flash('Sorry, this date is already booked. Please select another date.', 'error')
@@ -190,7 +196,12 @@ def get_bookings():
 
     user_bookings = booking_repo.find_by_user_id(session["user_id"])
 
-    bookings_by_status = {"requested": [], "accepted": [], "declined": []}
+    bookings_by_status = {
+        "requested": [],
+        "accepted": [],
+        "declined": [],
+        "expired": [],
+    }
     for booking in user_bookings:
         bookings_by_status[booking.status].append(booking)
 
@@ -219,8 +230,22 @@ def add_a_space():
     space_repo = SpaceRepository(db_connection)
     space_details = request.form
 
+    image_file = request.files.get('image-url')
+    image_path = None
 
-    space = Space(space_details["space-name"], space_details["space-description"], datetime.strptime(space_details['availability-start-date'], '%Y-%m-%d').date(), datetime.strptime(space_details['availability-end-date'], '%Y-%m-%d').date(), space_details["price-per-night"], space_details["image-url"], session['user_id'], None)
+    if image_file and image_file.filename != '':
+        filename = secure_filename(image_file.filename)
+
+        upload_folder = os.path.join('static')
+        os.makedirs(upload_folder, exist_ok=True)
+
+        file_path = os.path.join(upload_folder, filename)
+        image_file.save(file_path)
+
+        image_path = f"/static/{filename}"
+
+
+    space = Space(space_details["space-name"], space_details["space-description"], datetime.strptime(space_details['availability-start-date'], '%Y-%m-%d').date(), datetime.strptime(space_details['availability-end-date'], '%Y-%m-%d').date(), space_details["price-per-night"], image_path, session['user_id'], None)
 
     space_repo.create(space)
 
@@ -248,6 +273,11 @@ def accept_requests(id):
 
     return redirect('/my_spaces/requests')
 
+@app.route('/logout', methods=['get'])
+@login_required
+def logout():
+    session.clear()
+    return redirect('/')
 
 @app.route('/my_spaces/requests/<int:id>/deny', methods=['POST'])
 @login_required

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserve your space</title>
+    <title>Supernova - Reserve your space</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -25,23 +25,20 @@
                 <input type="date" id="booking_date" name="booking_date"
                     min="{{ today.strftime('%Y-%m-%d') if today.strftime('%Y-%m-%d') > space.availability_start_date.strftime('%Y-%m-%d') else space.availability_start_date.strftime('%Y-%m-%d') }}"
                     max="{{ space.availability_end_date.strftime('%Y-%m-%d') }}" required>
-                <p id="date_error" style="color: #d9534f; display: none;">
-                    Sorry, this date is already booked. Please select another date.
-                </p>
                 <input type="submit" value="Request booking">
             </form>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
         </section>
     </section>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    {% for category, message in messages %}
-    <div class="alert alert-{{ category }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-    </section>
+    {% include "components/footer.html" %}
 </body>
 
 </html>
