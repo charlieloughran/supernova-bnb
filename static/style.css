@@ -190,13 +190,13 @@ nav > ul > li > *{
     width: 100%;
 }
 
-.booking_grid {
+.booking-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 24px;
 }
 
-.booking_card_footer {
+.booking-card-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;

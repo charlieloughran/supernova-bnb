@@ -161,20 +161,23 @@ def get_my_spaces():
     # Lists all user spaces on my-spaces template
     return render_template('my-spaces.html', spaces=all_spaces)
 
-@app.route('/bookings', methods=['GET'])
+@app.route("/bookings", methods=["GET"])
 @login_required
 def get_bookings():
     db_connection = get_flask_database_connection(app)
     booking_repo = BookingRepository(db_connection)
     space_repo = SpaceRepository(db_connection)
-    
-    user_bookings = booking_repo.find_by_user_id(session["user_id"])
+
     spaces = space_repo.all()
-    
     spaces_by_id = {space.id: space for space in spaces}
-    
-    #Lists all bookings relating to the authenticated user
-    return render_template('bookings.html', bookings=user_bookings, spaces_by_id=spaces_by_id)
+
+    user_bookings = booking_repo.find_by_user_id(session["user_id"])
+
+    bookings_by_status = {"requested": [], "accepted": [], "declined": []}
+    for booking in user_bookings:
+        bookings_by_status[booking.status].append(booking)
+
+    return render_template("bookings.html", bookings=user_bookings, spaces_by_id=spaces_by_id,bookings_by_status=bookings_by_status)
 
 @app.route('/bookings/<int:id>')
 @login_required
