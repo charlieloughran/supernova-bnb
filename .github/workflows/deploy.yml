@@ -1,0 +1,104 @@
+name: CD 
+
+on:
+    workflow_run:
+        workflows: [ "CI" ]
+        types: [ completed ]
+        branches: [ main ]
+
+permissions:
+    contents: read
+
+concurrency:
+    group: production
+
+jobs:
+    deploy:
+        if: >-
+            ${{ github.event.workflow_run.conclusion == 'success' &&
+                github.event.workflow_run.event == 'push' &&
+                github.event.workflow_run.head_branch == 'main' }}
+        runs-on: ubuntu-latest
+        environment: production
+
+        env:
+            EC2_HOST: ${{ secrets.EC2_HOST }}
+            EC2_USER: ${{ secrets.EC2_USER }}
+            EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+
+        steps:
+            - name: Check out the commit that passed CI
+              uses: actions/checkout@v4
+
+            - name: Copy source to EC2
+              uses: appleboy/scp-action@v0.1.4
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ${{ secrets.EC2_USER }}
+                port: 22
+                key: ${{ secrets.EC2_SSH_KEY }}
+                source: "./*.py, ./requirements.txt, ./lib, ./seeds, ./static, ./templates"
+                target: ~/supernova_bnb
+
+            - name: Ensure Docker network exists
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ${{ secrets.EC2_USER }}
+                port: 22
+                key: ${{ secrets.EC2_SSH_KEY }}
+                script: |
+                    if [ ! "$(docker network ls -q -f name=supernova_bnb_network)" ]; then 
+                      docker network create supernova_bnb_network
+                    fi
+            
+            - name: Ensure database is running
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ${{ secrets.EC2_USER }}
+                port: 22
+                key: ${{ secrets.EC2_SSH_KEY }}
+                script: |
+                  if [ ! "$(docker ps -aq -f name=supernova_bnb_db)" ]; then
+                    docker run \
+                      --name supernova_bnb_db \
+                      --network supernova_bnb_network \
+                      -e POSTGRES_USER='${{ secrets.POSTGRES_USER }}' \
+                      -e POSTGRES_PASSWORD='${{ secrets.POSTGRES_PASSWORD }}' \
+                      -e POSTGRES_DB='supernova_bnb' \
+                      -d postgres:17
+                    docker exec -i supernova_bnb_db psql -U postgres -d supernova_bnb < ~/supernova_bnb/seeds/bookings.sql
+                    docker exec -i supernova_bnb_db psql -U postgres -d supernova_bnb < ~/supernova_bnb/seeds/spaces.sql
+                    docker exec -i supernova_bnb_db psql -U postgres -d supernova_bnb < ~/supernova_bnb/seeds/users.sql
+                  fi
+
+            - name: Build Docker image
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ${{ secrets.EC2_USER }}
+                port: 22
+                key: ${{ secrets.EC2_SSH_KEY }}
+                script: |
+                  docker build --pull -t supernova-bnb:latest ~/supernova_bnb
+
+            - name: Deploy new container
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ${{ secrets.EC2_USER }}
+                port: 22
+                key: ${{ secrets.EC2_SSH_KEY }}
+                script: |
+                  if [ "$(docker ps -q -f name=^supernova_bnb$)" ]; then
+                    docker stop $(docker ps -q -f name=^supernova_bnb$) || true
+                  fi
+                  docker rm supernova_bnb || true
+                  docker image prune -f || true
+                  docker run -d \
+                    --name supernova_bnb \
+                    --network supernova_bnb_network \
+                    --restart unless-stopped \
+                    -p 5001:5001 \
+                    supernova_bnb:latest
