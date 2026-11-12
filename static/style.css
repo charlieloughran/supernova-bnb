@@ -177,6 +177,10 @@ nav > ul > li > *{
     cursor: pointer;
 }
 
+.alert {
+    margin: 10px;
+}
+
 .alert-success {
     color: #155724;
 }
