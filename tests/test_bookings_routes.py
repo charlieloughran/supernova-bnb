@@ -60,3 +60,38 @@ def test_booking_detail_redirects_to_login_when_logged_out(page: Page, test_web_
     page.goto(f"http://{test_web_address}/bookings/1")
 
     assert page.url == f"http://{test_web_address}/login/new"
+    
+def test_bookings_cards_display_card_details(page: Page, login, db_connection: DatabaseConnection, test_web_address):
+    db_connection.seed('seeds/users.sql')
+    db_connection.seed('seeds/bookings.sql')
+    db_connection.seed('seeds/spaces.sql')
+    
+    login('bob@example.com', 'password2')
+    
+    page.goto(f"http://{test_web_address}/bookings")
+    
+    expect(page.locator(".booking-card")).to_have_count(3)
+
+    expect(page.locator(".booking-space-name")).to_have_text(["Earth", "Mercury", "Venus"])
+    expect(page.locator(".booking-price-per-night")).to_contain_text(["220.13", "220.13", "220.13"])
+    expect(page.locator(".booking-date")).to_have_text(["2027-03-01", "2027-02-11", "2027-02-11"])
+    expect(page.locator(".booking-status")).to_have_text(["requested", "requested", "requested"])
+    
+    cards = page.locator(".booking-card")
+
+    expect(cards.nth(0).get_by_role("link")).to_have_attribute("href", "/spaces/3")
+    expect(cards.nth(1).get_by_role("link")).to_have_attribute("href", "/spaces/1")
+    expect(cards.nth(2).get_by_role("link")).to_have_attribute("href", "/spaces/2")
+    
+def test_bookings_shows_message_when_user_has_no_bookings(page: Page, login, db_connection: DatabaseConnection, test_web_address):
+    db_connection.seed('seeds/users.sql')
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
+    db_connection.execute("DELETE FROM bookings WHERE booked_by = %s", [2])
+
+    login("bob@example.com", "password2") #this is booked_by = 2 per above
+    
+    page.goto(f"http://{test_web_address}/bookings")
+    
+    expect(page.locator(".booking-card")).to_have_count(0)
+    expect(page.locator(".no-bookings-message")).to_have_text("You have no bookings yet.")
