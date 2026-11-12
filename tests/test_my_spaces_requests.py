@@ -70,7 +70,14 @@ def test_owner_accepts_request(page, test_web_address):
 
     page.goto(f"http://{test_web_address}/my_spaces/requests")
 
-    
+    booking_ids = page.locator('.booking-id').all_inner_texts()
+
+    page.get_by_role("button", name="Accept").click()
+
+    booking_repo = BookingRepository(db_connection)
+
+
+    assert booking_repo.find_by_booking(5).status == "accepted"
 
 
 
@@ -79,7 +86,24 @@ Owner denies request (route)
 """
 
 def test_owner_denies_request(page, test_web_address):
-    pass
+        db_connection = DatabaseConnection(test_mode=True)
+        db_connection.connect()
+        db_connection.seed('seeds/spaces.sql')
+        db_connection.seed('seeds/bookings.sql')
+
+        page.goto(f"http://{test_web_address}/login/new")
+        page.get_by_placeholder("Email").fill("bob@example.com")
+        page.get_by_placeholder("Password").fill("password2")
+        page.get_by_role("button", name="Log-in").click()
+
+        page.goto(f"http://{test_web_address}/my_spaces/requests")
+
+        page.get_by_role("button", name="Deny").click()
+
+        booking_repo = BookingRepository(db_connection)
+
+
+        assert booking_repo.find_by_booking(5).status == "declined"
 
 
 """

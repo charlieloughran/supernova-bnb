@@ -202,6 +202,16 @@ def accept_requests(id):
 
     return redirect('/my_spaces/requests')
 
+
+@app.route('/my_spaces/requests/<int:id>/deny', methods=['POST'])
+@login_required
+def deny_requests(id):
+    db_connection = get_flask_database_connection(app)
+    booking_repo = BookingRepository(db_connection)
+    booking_repo.update(id, "declined")
+
+    return redirect('/my_spaces/requests')
+
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database
 # if started in test mode.
