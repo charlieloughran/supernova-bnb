@@ -257,6 +257,7 @@ nav > ul > li >a:hover{
     border-radius: 20px;
     padding: 10px;
     margin: 0 64px 0 64px;
+    
 }
 
 .my-spaces-actions {
@@ -264,25 +265,19 @@ nav > ul > li >a:hover{
     flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
-    justify-content: flex-end;
+    justify-content: flex-start;
+    background-color: #F4F1FF;
+    border-radius: 10px;
 
 }
 
 .my-spaces-actions a{
     text-decoration: none;
     text-align: center;
-    width: 25%;
+    width: 15%;
     margin: 10px;
 }
 
-.back-link {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 100%;
-    justify-content: flex-start;
-
-}
 
 .image-wrapper > img{
     width: 100%;
@@ -290,24 +285,28 @@ nav > ul > li >a:hover{
     border-radius: 20px;
 }
 
-
+.card-list {
+    display: flex;
+    flex-direction: row;
+}
 
 .add_space_form{
     display: flex;
-    max-width: 1200px;
+    max-width: 700px;
     flex-direction: column;
     box-sizing: border-box;
     padding: 20px 30px;
     border: 1px solid grey;
     border-radius: 30px;
-}
+}a
 .add_space_form *{
-    margin: 10px 0 0px 0;
+    margin: 10px;
 }
 .add_space_form input, textarea{
     padding: 10px;
     border: 1px solid black;
     border-radius: 10px;
+    margin: 10px 0 10px 0;
 }
 .add_space_form button{
     width: 100%;
@@ -317,6 +316,7 @@ nav > ul > li >a:hover{
     background-color: var(--primary-color);
     color: rgb(234, 234, 234);
     border: none;
+    margin-top: 10px;
 }
 
 .add_space_form button:hover{
@@ -331,41 +331,78 @@ nav > ul > li >a:hover{
     cursor: pointer;
 }
 
-.bookings-page {
-    margin: 0 80px;
-}
-
-.booking-grid .space_card_container {
-    margin: 0;
-}
-
-.site-footer {
-    margin-top: auto;
-    padding: 10px 80px;
-    border-top: 1px solid #ddd;
+.add-card > article {
+    background-color: #F4F1FF;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
+    justify-content: center;
+    min-width: 300px;
+    max-height: 200px;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s, transform 0.3s;
 }
 
-.site-footer p {
-    margin: 0;
+.add-card > article:hover {
+    background-color: #F4F1FF;
+    box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.1);
+
+    transform: translateY(-5px); /* Lifts the card up slightly on hover */
 }
 
-.footer-links {
-    display: flex;
-    gap: 24px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+
+
+.add-card-text {
+    color: var(--secondary-color);
+    text-align: center;
+    font-weight: 500;
+    color: #a19db0;
+    font-size: 100px;
+    text-decoration-line: none;
+
+
 }
 
-.footer-links a {
-    color: inherit;
+
+.add-card-text:hover {
+    color: var(--secondary-color);
+    text-align: center;
+    font-weight: 500;
+    color: var(--primary-color);
+    font-size: 100px;
+    text-decoration-line: none;
+
+
+}
+
+.add-card:hover {
+    cursor: pointer;
+    
+}
+
+.card-list > a {
     text-decoration: none;
 }
 
-.footer-links a:hover {
-    text-decoration: underline;
+.booking-card {
+    display: flex;
+    flex-wrap: nowrap;
+    max-width: 335px;
+    min-height: 418px;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.459);
+    border-radius: 20px;
+    padding: 10px;
+    margin: 0 10px 0 10px;
+}
+
+.booking-actions {
+    display: flex;
+    flex-direction: row;
+}
+
+.booking-actions button{
+    margin: 0px 10px 10px 0;
 }
