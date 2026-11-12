@@ -248,6 +248,11 @@ def accept_requests(id):
 
     return redirect('/my_spaces/requests')
 
+@app.route('/logout', methods=['get'])
+@login_required
+def logout():
+    session.clear()
+    return redirect('/')
 
 @app.route('/my_spaces/requests/<int:id>/deny', methods=['POST'])
 @login_required
