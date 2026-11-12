@@ -191,7 +191,12 @@ def get_bookings():
 
     user_bookings = booking_repo.find_by_user_id(session["user_id"])
 
-    bookings_by_status = {"requested": [], "accepted": [], "declined": []}
+    bookings_by_status = {
+        "requested": [],
+        "accepted": [],
+        "declined": [],
+        "expired": [],
+    }
     for booking in user_bookings:
         bookings_by_status[booking.status].append(booking)
 
