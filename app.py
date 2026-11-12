@@ -111,18 +111,42 @@ def get_space_details(space_id):
 def request_booking(space_id):
     db_connection = get_flask_database_connection(app)
     booking_repository = BookingRepository(db_connection)
+    space_repository = SpaceRepository(db_connection)
 
     # get date from form and user_id from session data
-    booking_date = request.form['booking_date']
+    booking_date = datetime.strptime(
+        request.form['booking_date'], '%Y-%m-%d'
+        ).date()
     booked_by = session["user_id"]
 
-    # create the booking
-    booking = Booking(space_id, booked_by, booking_date, 'requested')
-    booking_repository.create(booking)
+    # find already accepted bookings
+    accepted_bookings = booking_repository.find_by_space_and_status(space_id, 'accepted')
 
-    # success message
-    flash("Booking requested!", "success")
-    return redirect(f'/spaces/{space_id}')
+    accepted_bookings_same_date = [booking for booking in accepted_bookings if booking.date == booking_date]
+
+    # find space availability dates
+    space_details = space_repository.find(space_id)
+    min_date = space_details.availability_start_date
+    max_date = space_details.availability_end_date
+
+    if accepted_bookings_same_date != []:
+        # raise error if date is already booked
+        flash('Sorry, this date is already booked. Please select another date.', 'error')
+        return redirect(f'/spaces/{space_id}')
+
+    elif booking_date < min_date or booking_date > max_date:
+        # raise error if space isn't available to book on date
+        flash('Sorry, the space is unavailable on this date. Please select a date available on the calendar', 'error')
+        return redirect(f'/spaces/{space_id}')
+
+    else:
+        # create the booking
+        booking = Booking(space_id, booked_by, booking_date, 'requested')
+        booking_repository.create(booking)
+
+        # success message
+        flash("Your booking request has been submitted!", "success")
+        return redirect(f'/spaces/{space_id}')
 
 @app.route('/my_spaces', methods=['GET'])
 @login_required
