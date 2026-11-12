@@ -197,3 +197,7 @@ nav > ul > li > *{
     justify-content: flex-end;
     gap: 30px;
 }
+.space-name{
+    font-size: var(--p-text);
+    font-weight: bold;
+}
