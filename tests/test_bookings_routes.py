@@ -9,6 +9,7 @@ USER_ID = 2
 
 def test_bookings_list_shown(page: Page, db_connection: DatabaseConnection, test_web_address, login):
     db_connection.seed('seeds/users.sql')
+    db_connection.seed('seeds/spaces.sql')
     db_connection.seed('seeds/bookings.sql')
     
     login("bob@example.com", "password2")
@@ -27,7 +28,8 @@ def test_booking_detail_shown(
     page: Page, db_connection: DatabaseConnection, test_web_address, login
 ):
     db_connection.seed('seeds/users.sql')
-    db_connection.seed("seeds/bookings.sql")
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
     
     login("bob@example.com", "password2")
 
@@ -43,7 +45,8 @@ def test_booking_detail_returns_404_when_missing(
     page: Page, db_connection: DatabaseConnection, test_web_address, login
 ):
     db_connection.seed('seeds/users.sql')
-    db_connection.seed("seeds/bookings.sql")
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
         
     login("bob@example.com", "password2")
 
@@ -63,8 +66,8 @@ def test_booking_detail_redirects_to_login_when_logged_out(page: Page, test_web_
     
 def test_bookings_cards_display_card_details(page: Page, login, db_connection: DatabaseConnection, test_web_address):
     db_connection.seed('seeds/users.sql')
-    db_connection.seed('seeds/bookings.sql')
     db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
     
     login('bob@example.com', 'password2')
     
@@ -95,3 +98,41 @@ def test_bookings_shows_message_when_user_has_no_bookings(page: Page, login, db_
     
     expect(page.locator(".booking-card")).to_have_count(0)
     expect(page.locator(".no-bookings-message")).to_have_text("You have no bookings yet.")
+    
+def test_bookings_grouped_by_status(page: Page, login, db_connection: DatabaseConnection, test_web_address):
+    db_connection.seed('seeds/users.sql')
+    db_connection.seed('seeds/spaces.sql')
+    db_connection.seed('seeds/bookings.sql')
+    
+    login("bob@example.com", "password2")
+    db_connection.execute("INSERT INTO bookings (space_id, booked_by, date, status) VALUES (%s, %s, %s, %s)", [4, 2, '2027-04-10', 'accepted'])
+    db_connection.execute("INSERT INTO bookings (space_id, booked_by, date, status) VALUES (%s, %s, %s, %s)", [6, 2, '2027-01-01', 'declined'])
+    
+    page.goto(f"http://{test_web_address}/bookings")
+    
+    expect(page.locator(".booking-status-grouping")).to_have_count(3)
+    expect(page.locator(".booking-status-grouping-title")).to_have_text(["Requested", "Accepted", "Declined"])
+    
+    requested = page.locator(".booking-status-grouping").nth(0)
+    accepted = page.locator(".booking-status-grouping").nth(1)
+    declined = page.locator(".booking-status-grouping").nth(2)
+    
+    expect(requested.locator(".booking-space-name")).to_have_text(["Earth", "Mercury", "Venus"])
+    expect(accepted.locator(".booking-space-name")).to_have_text(["Mars"])
+    expect(declined.locator(".booking-space-name")).to_have_text(["Saturn"])
+
+def test_bookings_hides_empty_status_sections(page: Page, login, db_connection: DatabaseConnection, test_web_address):
+    
+    db_connection.seed("seeds/users.sql")
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+
+    login("bob@example.com", "password2")
+
+    page.goto(f"http://{test_web_address}/bookings")
+
+    expect(page.locator(".booking-status-grouping")).to_have_count(1)
+    expect(page.locator(".booking-status-grouping-title")).to_have_text(["Requested"])
+    
+    
+    
