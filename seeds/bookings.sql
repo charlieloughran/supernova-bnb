@@ -8,7 +8,7 @@ CREATE TABLE bookings (
     booked_by INT,
     date DATE,
     status VARCHAR(20) CHECK (
-        status IN ('requested', 'accepted', 'declined')
+        status IN ('requested', 'accepted', 'declined', 'expired')
     )
 );
 
