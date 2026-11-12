@@ -120,13 +120,19 @@ def test_bookings_grouped_by_status(page: Page, login, db_connection: DatabaseCo
     expect(requested.locator(".booking-space-name")).to_have_text(["Earth", "Mercury", "Venus"])
     expect(accepted.locator(".booking-space-name")).to_have_text(["Mars"])
     expect(declined.locator(".booking-space-name")).to_have_text(["Saturn"])
+
+def test_bookings_hides_empty_status_sections(page: Page, login, db_connection: DatabaseConnection, test_web_address):
     
-    # booking-status-grouping
-    # booking-status-grouping-title
-    
-    
-    
-# def test_bookings_hides_empty_status_sections():
+    db_connection.seed("seeds/users.sql")
+    db_connection.seed("seeds/spaces.sql")
+    db_connection.seed("seeds/bookings.sql")
+
+    login("bob@example.com", "password2")
+
+    page.goto(f"http://{test_web_address}/bookings")
+
+    expect(page.locator(".booking-status-grouping")).to_have_count(1)
+    expect(page.locator(".booking-status-grouping-title")).to_have_text(["Requested"])
     
     
     
