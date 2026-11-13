@@ -3,7 +3,7 @@
     <img src="{{ space.image_url }}" alt="image of the location">
     <div class="space_card_header">
         <h3>{{ space.name }}</h3>
-        <p>{{space.price_per_night}}£</p>
+        <p>£{{space.price_per_night}}</p>
     </div>
     <p class="space_card_description">{{space.description}}</p>
     <form action="/spaces/{{space.id}}" method="get">
