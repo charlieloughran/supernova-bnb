@@ -1,68 +1,68 @@
-name: CD
+# name: CD
 
-on:
-    workflow_run:
-        workflows: [ "CI" ]
-        types: [ completed ]
-        branches: [ main ]
+# on:
+#     workflow_run:
+#         workflows: [ "CI" ]
+#         types: [ completed ]
+#         branches: [ main ]
 
-permissions:
-    contents: read
+# permissions:
+#     contents: read
 
-concurrency:
-    group: production
-    cancel-in-progress: false
+# concurrency:
+#     group: production
+#     cancel-in-progress: false
 
-jobs:
-    deploy:
-        if: >-
-            ${{ github.event.workflow_run.conclusion == 'success' &&
-                github.event.workflow_run.event == 'push' &&
-                github.event.workflow_run.head_branch == 'main' }}
-        runs-on: ubuntu-latest
-        environment: production
+# jobs:
+#     deploy:
+#         if: >-
+#             ${{ github.event.workflow_run.conclusion == 'success' &&
+#                 github.event.workflow_run.event == 'push' &&
+#                 github.event.workflow_run.head_branch == 'main' }}
+#         runs-on: ubuntu-latest
+#         environment: production
 
-        env:
-            EC2_HOST: ${{ secrets.EC2_HOST }}
-            EC2_USER: ${{ secrets.EC2_USER }}
-            EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+#         env:
+#             EC2_HOST: ${{ secrets.EC2_HOST }}
+#             EC2_USER: ${{ secrets.EC2_USER }}
+#             EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
 
-        steps:
-            - name: Check out the commit that passed CI
-              uses: actions/checkout@v4
-              with:
-                ref: ${{ github.event.workflow_run.head_sha }}
-                persist-credentials: false
+#         steps:
+#             - name: Check out the commit that passed CI
+#               uses: actions/checkout@v4
+#               with:
+#                 ref: ${{ github.event.workflow_run.head_sha }}
+#                 persist-credentials: false
 
-            - name: Copy source to EC2
-              uses: appleboy/scp-action@v0.1.4
-              with:
-                host: ${{ secrets.EC2_HOST }}
-                username: ${{ secrets.EC2_USER }}
-                port: 22
-                key: ${{ secrets.EC2_SSH_KEY }}
-                source: "./*.py, ./requirements.txt, ./lib, ./seeds, ./static, ./templates, ./Dockerfile, ./compose.yaml"
-                target: ~/supernova_bnb
+#             - name: Copy source to EC2
+#               uses: appleboy/scp-action@v0.1.4
+#               with:
+#                 host: ${{ secrets.EC2_HOST }}
+#                 username: ${{ secrets.EC2_USER }}
+#                 port: 22
+#                 key: ${{ secrets.EC2_SSH_KEY }}
+#                 source: "./*.py, ./requirements.txt, ./lib, ./seeds, ./static, ./templates, ./Dockerfile, ./compose.yaml"
+#                 target: ~/supernova_bnb
 
-            - name: Deploy with Compose
-              uses: appleboy/ssh-action@v1.0.3
-              env:
-                POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-                POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-              with:
-                host: ${{ secrets.EC2_HOST }}
-                username: ${{ secrets.EC2_USER }}
-                port: 22
-                key: ${{ secrets.EC2_SSH_KEY }}
-                envs: POSTGRES_USER,POSTGRES_PASSWORD
-                script: |
-                  set -e
-                  cd ~/supernova_bnb
-                  docker compose config --quiet
-                  docker compose up -d --build --wait
-                  attempt=0
-                  until docker compose exec -T web python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/', timeout=5).close()"; do
-                    attempt=$((attempt + 1))
-                    [ "$attempt" -lt 6 ] || exit 1
-                    sleep 5
-                  done
+#             - name: Deploy with Compose
+#               uses: appleboy/ssh-action@v1.0.3
+#               env:
+#                 POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+#                 POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+#               with:
+#                 host: ${{ secrets.EC2_HOST }}
+#                 username: ${{ secrets.EC2_USER }}
+#                 port: 22
+#                 key: ${{ secrets.EC2_SSH_KEY }}
+#                 envs: POSTGRES_USER,POSTGRES_PASSWORD
+#                 script: |
+#                   set -e
+#                   cd ~/supernova_bnb
+#                   docker compose config --quiet
+#                   docker compose up -d --build --wait
+#                   attempt=0
+#                   until docker compose exec -T web python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5001/', timeout=5).close()"; do
+#                     attempt=$((attempt + 1))
+#                     [ "$attempt" -lt 6 ] || exit 1
+#                     sleep 5
+#                   done
