@@ -94,7 +94,7 @@ nav > ul > li >a:hover{
 }
 .space_card_section > h2{
     width: 100%;
-    font-size: var(--sub-text);
+    font-size: calc(var(--sub-text)*0.8);
     font-weight: 400;
 }
 
