@@ -2,9 +2,9 @@
     --primary-color: #0f2f8e;
     --primary-hover: #1c44bc;
     --secondary-color: #00ffc8;
-    --secondary-hover: #f953ff;
+    --secondary-hover: #00ffc8;
     --accent-color: #f953ff;
-    --accent-hover:  #00ffc8;
+    --accent-hover: #f953ff;
 
     --background-color: #00072a;
 
@@ -80,6 +80,14 @@ p {
     letter-spacing: -0.025em;
 }
 
+.logo:hover {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-decoration: none;
+    letter-spacing: -0.025em;
+}
+
 .nav-links {
     list-style: none;
     display: flex;
@@ -98,7 +106,7 @@ p {
 }
 
 .nav-link:hover {
-    color: var(  --secondary-hover);
+    color: var(  --accent-color);
 }
 
 main {
@@ -174,18 +182,21 @@ main {
 }
 
 .btn-primary {
-    background-color: var(--secondary-color);
+    background-color: var(--accent-color);
     color: var(--background-color);
+    transition: box-shadow 0.2s;
 }
 
 .btn-primary:hover {
-    background-color: var(--secondary-hover);
+    background-color: var(--accent-color);
+
 }
 
 .btn-secondary {
     background-color: #ffffff;
     color: var(--primary-color);
     border-color: var(--primary-color);
+
 }
 
 .btn-secondary:hover {
@@ -196,12 +207,19 @@ main {
 .btn-outline {
     color: var(--secondary-color);
     border-color: var(--secondary-color);
+    box-shadow: 0px 0px 0px var(--accent-color);
+    transition: box-shadow 0.2s;
+
 
 }
 
 .btn-outline:hover {
     color: var(--accent-color);
     border-color: var(--accent-color);
+    box-shadow: 4px 4px 0px var(--accent-color);
+
+
+
 
 }
 
