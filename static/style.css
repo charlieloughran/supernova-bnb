@@ -5,6 +5,8 @@
     --secondary-hover: #00ffc8;
     --accent-color: #f953ff;
     --accent-hover: #f953ff;
+    --warning-color: #ff0000;
+    --warning-hover: #e00d0d;
     --border-light: #eef5ff;
 
 
@@ -212,8 +214,62 @@ main {
     display: block;
     width: 100%;
     text-align: center;
-    border-radius: 0; /* Optional: squares off the corners to match the card edges */
+    border-radius: 0;
     padding: 0.85rem 1rem;
+}
+
+.card.booking-card-horizontal {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding: 1.25rem;
+    gap: 1.5rem;
+    align-items: stretch;
+    padding-bottom: 1.25rem; 
+}
+
+.card.booking-card-horizontal img {
+    width: 280px;
+    height: 100%;
+    min-height: 180px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border-radius: var(--border-radius-xs);
+}
+
+.card-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.booking-card-horizontal .card-body {
+    padding: 0;
+    gap: 0.5rem;
+}
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.booking-card-horizontal .card-footer {
+    position: static;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    padding-top: 0.75rem;
+    background-color: transparent;
+    border-top: 1px solid var(--border-color);
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
 }
 
 .btn {
@@ -233,12 +289,13 @@ main {
 .btn-primary {
     background-color: var(--secondary-color);
     color: var(--background-color);
+    
 }
 
 .btn-primary:hover {
     background-color: var(--accent-color);
     transition: background-color var(--transition-fast);
-
+    cursor: pointer;
 
 }
 
@@ -251,6 +308,7 @@ main {
 
 .btn-secondary:hover {
     background-color: var(--secondary-color);
+    cursor: pointer;
 }
 
 
@@ -260,19 +318,37 @@ main {
     box-shadow: 0px 0px 0px var(--accent-color);
     transition: box-shadow var(--transition-fast), background-color var(--transition-fast);
 
-
-
 }
 
 .btn-outline:hover {
     color: var(--accent-color);
     border-color: var(--accent-color);
     box-shadow: 4px 4px 0px var(--accent-color);
+    cursor:pointer;
+
 
 }
 
-.btn-full-width{
+.btn-warning {
+    color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    box-shadow: 0px 0px 0px var(--accent-color);
+    transition: box-shadow var(--transition-fast), background-color var(--transition-fast);
+
+}
+
+.btn-warning:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    box-shadow: 4px 4px 0px var(--accent-color);
+    cursor:pointer;
+
+}
+
+.btn-group {
+    display: flex;
     width: 100%;
+    gap: 16px;
 }
 
 form {

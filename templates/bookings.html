@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SupernovaBNB - My Bookings</title>
-
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     {% from 'components/booking_card.html' import booking_card %}
     {% include "components/nav.html" %}
 
-    <main class="bookings-page">
-        <h2>My bookings</h2>
+    <main class="container">
+        <h1>My Bookings</h1>
+        
         {% if bookings %}
             {% for status, group in bookings_by_status.items() %}
                 {% if group %}
@@ -27,10 +27,13 @@
                 {% endif %}
             {% endfor %}
         {% else %}
-            <p class="no-bookings-message">You have no bookings yet.</p>
-            <a href="/">Browse spaces</a>
+            <div class="no-bookings-state">
+                <p class="no-bookings-message">You have no bookings yet.</p>
+                <a href="/" class="btn btn-primary">Browse spaces</a>
+            </div>
         {% endif %}
     </main>
+
     {% include "components/footer.html" %}
 </body>
 </html>
