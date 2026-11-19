@@ -272,6 +272,28 @@ main {
     transition: none;
 }
 
+.card.add-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    min-height: 320px;
+}
+
+.add-card-button {
+    font-size: 128px;
+    font-weight: 300;
+    color: var(--secondary-color);
+    margin: 0;
+    line-height: 1;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.card.add-card:hover .add-card-button {
+    transform: scale(1.1); /* Adds a subtle scaling pop when hovered */
+}
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -402,6 +424,16 @@ input:focus, textarea:focus, select:focus {
     color: #991b1b;
     border: 1px solid #fecaca;
 }
+
+.site-footer {
+    border-top: 1px solid var(--secondary-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--background-color);
+    width: 100%;
+}
+
 
 footer {
     width: 100%;
