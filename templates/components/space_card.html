@@ -1,14 +1,13 @@
 {% macro space_card(space) %}
-<article class="space_card_container">
+<article class="card">
     <img src="{{ space.image_url }}" alt="image of the location">
-    <div class="space_card_header">
+    <div class="card-body">
         <h3>{{ space.name }}</h3>
         <p>£{{space.price_per_night}}</p>
+        <p>{{space.description}}</p>
     </div>
-    <p class="space_card_description">{{space.description}}</p>
-    <form action="/spaces/{{space.id}}" method="get">
-        <input type="hidden" name="space_id" value="{{space.id}}">
-        <button type="submit" class="btn-secondary">View Space</button>
-    </form>
+    <div class="card-footer">
+    <a href="/spaces/{{space.id}}" class="btn btn-primary">View Space</a>
+    </div>
 </article>
 {% endmacro %}
