@@ -18,7 +18,9 @@
                 <img src="/{{ space.image_url }}" alt="{{ space.name }}">
             </section>
 
-            <section class="form" id="space-right-container">
+            <section class="space-details" id="space-right-container">
+                <h1>{{ space.name }}</h1>
+                <p> {{space.description }}</p>
                 {% if is_owner %}
                     <h2>Your space</h2>
                     <h3>£{{ space.price_per_night }} <small>/ night</small></h3>
@@ -27,6 +29,7 @@
                 {% else %}
                     
                     <form class="form" method="POST" action="/spaces/{{ space.id }}" novalidate>
+
                         <h2>Reserve your space</h2>
                         <h3>£{{ space.price_per_night }} <small>/ night</small></h3>
 

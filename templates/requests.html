@@ -7,30 +7,47 @@
     </head>
     <body>
         {% include "components/nav.html" %}
-        <div class="container">
-        <div class=" my-spaces-actions">
-            <a href="/my_spaces" class="btn-primary">Back to My Spaces</a>
-        </div>
-        <h2>My Spaces - Bookings</h2>
-        {% for booking in bookings %}
-        <article id="{{ booking.id }}" class="booking-card">
-            <h3>Booking Id: <span class="booking-id">{{ booking.id }}</span></h3>
-            <p>Space Id: {{ booking.space_id }}</p>
-            <p>Booked By: {{ booking.booked_by }}</p>
-            <p>Date Requested: {{ booking.date }}</p>
-        <div class="booking-actions">
-            <form action="/my_spaces/requests/{{ booking.id }}/accept" method="POST">
-                <button type="submit" class="btn btn-primary">Accept</button>
-            </form>
-            <form action="/my_spaces/requests/{{ booking.id }}/deny" method="POST">
-                <button type="submit" class="btn btn-secondary">Deny</button>
-            </form>
-        </div>
-        </article>
-        {% else %}
-        <p>You have no booking requests right now</p>
-        {% endfor %}
-        </div>
+        
+        <main>
+            <div class="container">
+                <div class="actions">
+                    <a href="/my_spaces" class="btn btn-outline">Back to My Spaces</a>
+                </div>
+
+                <h2 style="width: 100%; margin-bottom: 1rem;">My Spaces - Requests</h2>
+
+                {% for booking in bookings %}
+                <article id="{{ booking.id }}" class="card booking-card-horizontal">
+                    <div class="card-content-wrapper">
+                        <div class="card-body">
+                            <div class="card-header-row">
+                                <h3>Booking Id: <span class="booking-id">{{ booking.id }}</span></h3>
+                            </div>
+                            <p>Space ID: {{ booking.space_id }}</p>
+                            <p>Booked By: {{ booking.booked_by }}</p>
+                            <p>Date Requested: {{ booking.date }}</p>
+                        </div>
+                       
+                        <div class="card-footer">
+                            <div class="btn-group"></div>
+                            <!-- Accept Form -->
+                            <form method="POST" action="/my_spaces/requests/{{ booking.id }}/accept" style="display: inline;">
+                                <button type="submit" class="btn btn-primary">Accept</button>
+                            </form>
+                            
+                            <!-- Deny Form -->
+                            <form method="POST" action="/my_spaces/requests/{{ booking.id }}/deny" style="display: inline;">
+                                <button type="submit" class="btn btn-secondary">Deny</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+                {% else %}
+                    <p style="width: 100%;">You have no booking requests right now</p>
+                {% endfor %}
+            </div>
+        </main>
+
         {% include "components/footer.html" %}
     </body>
 </html>

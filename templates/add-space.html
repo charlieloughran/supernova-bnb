@@ -8,8 +8,8 @@
     <body>
         {% include "components/nav.html" %}
         <div class="container">
-            <div class="back-link my-spaces-actions">
-                <a href="/my_spaces" class="btn btn-primary">Back to My Spaces</a>
+            <div class="back-link actions">
+                <a href="/my_spaces" class="btn btn-outline">Back to My Spaces</a>
             </div>
 
         <h2>Add a  Space</h2>
@@ -28,7 +28,10 @@
                 <input id="availability-end-date" name="availability-end-date" type="date">
 
                 <label for="price-per-night">Price (per night)</label>
-                <input id="price-per-night" name="price-per-night" type="number">
+                <div class="input-with-symbol">
+                    <span class="currency-symbol">£</span>
+                    <input type="number" id="price_per_night" name="price_per_night">
+                </div>
                 
                 <label for="image-url">Upload Image of Space</label>
                 <input id="image-url" name="image-url" type="file">

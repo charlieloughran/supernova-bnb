@@ -292,7 +292,8 @@ main {
 .booking-card-horizontal .card-footer {
     position:relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 16px;
     align-items: center;
     width: 100%;
     padding: 0;
@@ -332,6 +333,13 @@ main {
     transform: scale(1.1); /* Adds a subtle scaling pop when hovered */
 }
 
+.actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    gap: 16px;
+    
+}
 .btn {
     display: inline-flex;
     align-items: center;
@@ -368,6 +376,7 @@ main {
     background-color: #ffffff;
     color: var(--primary-color);
     border-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
 
 }
 
@@ -379,6 +388,7 @@ main {
 
 .btn-outline {
     color: var(--secondary-color);
+    background-color: none;
     border-color: var(--secondary-color);
     box-shadow: 0px 0px 0px var(--accent-color);
     transition: box-shadow var(--transition-fast), background-color var(--transition-fast);
@@ -396,6 +406,7 @@ main {
 
 .btn-warning {
     color: var(--secondary-color);
+    background-color: none;
     border-color: var(--secondary-color);
     box-shadow: 0px 0px 0px var(--accent-color);
     transition: box-shadow var(--transition-fast), background-color var(--transition-fast);
@@ -415,9 +426,10 @@ main {
     gap: 8px;
 }
 
-form {
+.form {
     display: flex;
     flex-direction: column;
+    margin: 1em 0em;
     gap: 1.5rem;
     max-width: 600px;
     width: 100%;
@@ -470,6 +482,26 @@ select {
 input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     cursor: pointer;
+}
+
+.input-with-symbol {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-with-symbol .currency-symbol {
+    position: absolute;
+    left: 1rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    pointer-events: none; 
+}
+
+.input-with-symbol input {
+    padding-left: 2.5rem; 
+    width: 100%;
 }
 
 input::placeholder,
@@ -609,8 +641,9 @@ input.error:focus, textarea.error:focus {
     max-width: 1200px; 
 }
 
-.space-detail-container .space-details, 
-.space-detail-container .form {
+
+#space-left-container,
+#space-right-container {
     flex: 1;
     width: 50%; 
 }
