@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>SupernovaBnB - Add a Space</title>
-
+        {% include "components/import_stylesheets.html" %}
         <link rel="stylesheet" href="/static/style.css" >
     </head>
     <body>
@@ -13,7 +13,7 @@
             </div>
 
         <h2>Add a  Space</h2>
-        <form action="/my_spaces/new" method="POST" class="add_space_form" enctype="multipart/form-data">
+        <form action="/my_spaces/new" method="POST" class="form" enctype="multipart/form-data" id="add-space">
 
                 <label for="space-name">Name</label>
                 <input id="space-name" name="space-name" type="text" placeholder="Enter Name of Space">

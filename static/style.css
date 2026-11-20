@@ -18,7 +18,7 @@
     --success-color: #10b981;
     --error-color: #ef4444;
 
-    --font-main: system-ui, -apple-system, sans-serif;
+    --font-main: "Space Mono", system-ui, -apple-system, sans-serif;
     --font-size-base: 16px;
 
     --border-radius-sm: 4px;
@@ -33,6 +33,32 @@
     padding: 0;
 }
 
+
+.space-mono-regular {
+    font-family: "Space Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.space-mono-bold {
+    font-family: "Space Mono", monospace;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.space-mono-regular-italic {
+    font-family: "Space Mono", monospace;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.space-mono-bold-italic {
+    font-family: "Space Mono", monospace;
+    font-weight: 700;
+    font-style: italic;
+}
+
+
 body {
     min-height: 100vh;
     display: flex;
@@ -45,7 +71,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--text-main);
+    color: var(--accent-color);
     font-weight: 700;
     line-height: 1.2;
 }
@@ -126,6 +152,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    align-items: center;
     max-width: 1200px;
     width: 100%;
     margin: 2rem auto;
@@ -158,18 +185,19 @@ main {
     display: flex;
     flex-direction: column;
     border-radius: var(--border-radius-xs);
+    border: 2px solid var(--secondary-color);
     padding: 1.25rem;
     padding-bottom: 4rem; 
     gap: 1.0rem;
-    background-color: var(--primary-color);
-    box-shadow: 15px 15px 0px var(--secondary-color);
+    background-color: var(--background-color);
     transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
     overflow: hidden;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 5px 5px 0px var(--accent-color);
+    box-shadow: 10px 10px 0px var(--accent-color);
+    border: 2px solid var(--accent-color);
     cursor: pointer;
 }
 
@@ -178,12 +206,15 @@ main {
     height: 200px;
     object-fit: cover;
     border-radius: var(--border-radius-xs);
+    border: 2px var(--border-light) solid;
 }
+
 
 .card-body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    color: var(--secondary-color);
 }
 
 .card-footer {
@@ -192,7 +223,7 @@ main {
     left: 0;
     right: 0;
     padding: 1rem 1.25rem;
-    background-color: var(--primary-color);
+    background-color: var(--background-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -303,6 +334,8 @@ main {
     border: 1px solid transparent;
     cursor: pointer;
     text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
     font-size: 1rem;
     font-weight: 500;
     transition: background-color var(--transition-fast);
@@ -376,8 +409,20 @@ main {
 form {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    max-width: 500px;
+    gap: 1.5rem;
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--background-color);
+    padding: 2rem;
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius-md);
+    box-shadow: 6px 6px 0px var(--secondary-color);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+form:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 8px 8px 0px var(--accent-color);
 }
 
 .form-group {
@@ -387,24 +432,143 @@ form {
 }
 
 label {
-    font-weight: 500;
-    font-size: 0.875rem;
-    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    letter-spacing: 0.025em;
 }
 
-input, textarea, select {
-    padding: 0.75rem;
-    border: 1px solid var(--border-color);
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+input[type="search"],
+textarea,
+select {
+    padding: 0.85rem 1rem;
+    border: 2px solid var(--border-color);
     border-radius: var(--border-radius-sm);
     font-size: 1rem;
     font-family: inherit;
     color: var(--text-main);
-    background-color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.03);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
 }
 
-input:focus, textarea:focus, select:focus {
-    outline: 2px solid var(--primary-color);
-    outline-offset: -1px;
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+input:hover, 
+textarea:hover, 
+select:hover {
+    border-color: var(--secondary-color);
+}
+
+input:focus, 
+textarea:focus, 
+select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background-color: rgba(0, 255, 200, 0.02);
+    box-shadow: 4px 4px 0px var(--accent-color);
+}
+
+/* Checkbox and Radio Button Custom Styling */
+.form-check-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius-sm);
+    background-color: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+    transition: all var(--transition-fast);
+}
+
+input[type="radio"] {
+    border-radius: 50%;
+}
+
+input[type="checkbox"]:hover,
+input[type="radio"]:hover {
+    border-color: var(--secondary-color);
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+    box-shadow: 2px 2px 0px var(--accent-color);
+}
+
+input[type="checkbox"]:checked::before {
+    content: "";
+    width: 6px;
+    height: 11px;
+    border: solid var(--background-color);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
+}
+
+input[type="radio"]:checked::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--background-color);
+}
+
+input[type="file"] {
+    padding: 0.6rem;
+    border: 2px dashed var(--border-color);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-muted);
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.02);
+    transition: border-color var(--transition-fast);
+}
+
+input[type="file"]:hover {
+    border-color: var(--secondary-color);
+    color: var(--text-main);
+}
+
+.form-hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.form-error {
+    font-size: 0.8rem;
+    color: var(--error-color);
+    font-weight: 500;
+}
+
+input.error, textarea.error {
+    border-color: var(--error-color);
+}
+
+input.error:focus, textarea.error:focus {
+    border-color: var(--error-color);
+    box-shadow: 4px 4px 0px var(--error-color);
 }
 
 .alert {
